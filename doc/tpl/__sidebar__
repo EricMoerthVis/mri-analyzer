@@ -1,0 +1,6 @@
+docs:
+  getting_started:
+    overview: index.html
+    viewer: viewer.html
+    cli: cli.html
+    shortcuts: shortcuts.html
