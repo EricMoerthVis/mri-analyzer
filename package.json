@@ -1,6 +1,6 @@
 {
   "name": "mri-analyzer",
-  "version": "0.0.0-semantically-release",
+  "version": "1.0.0-rc.2",
   "description": "MRI Analyzer",
   "repository": {
     "type": "git",
@@ -72,6 +72,6 @@
     }
   },
   "bin": {
-    "mri-analyzer": "./bin/mri-analyzer-cli.js"
+    "mri-analyzer": "./bin/mri-analyzer.js"
   }
 }

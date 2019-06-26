@@ -1,0 +1,16 @@
+{
+  "name": "mri-analyzer",
+  "short_name": "image-viewer",
+  "lang": "en-US",
+  "start_url": "/mri-analyzer/app/",
+  "scope": "/mri-analyzer/app/",
+  "display": "standalone",
+  "theme_color": "#8B8B8B",
+  "icons": [
+    {
+      "src": "/mri-analyzer/logo.png",
+      "sizes": "50x50",
+      "type": "image/png"
+    }
+  ]
+}
