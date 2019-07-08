@@ -283,7 +283,8 @@ function createPlaneIndexSliders(
   viewerDOMId,
   volumeRepresentation,
   renderWindow,
-  isBackgroundDark
+  isBackgroundDark,
+  sliceSelectionHandle
 ) {
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['sliderLabel'],
@@ -317,6 +318,7 @@ function createPlaneIndexSliders(
   function updateXSlice() {
     const value = Number(xSliceElement.value);
     volumeRepresentation.setXSlice(value);
+    sliceSelectionHandle("x" + value.toString());
     const valueString = String(xSliceElement.value).substring(
       0,
       numberOfValueChars
@@ -357,6 +359,7 @@ function createPlaneIndexSliders(
   function updateYSlice() {
     const value = Number(ySliceElement.value);
     volumeRepresentation.setYSlice(value);
+    sliceSelectionHandle("y" + value.toString());
     const valueString = String(ySliceElement.value).substring(
       0,
       numberOfValueChars
@@ -397,6 +400,7 @@ function createPlaneIndexSliders(
   function updateZSlice() {
     const value = Number(zSliceElement.value);
     volumeRepresentation.setZSlice(value);
+    sliceSelectionHandle("z" + value.toString());
     const valueString = String(zSliceElement.value).substring(
       0,
       numberOfValueChars
@@ -605,7 +609,8 @@ function createImageUI(
   dataArray,
   view,
   isBackgroundDark,
-  use2D
+  use2D,
+  sliceSelectionHandle
 ) {
   const renderWindow = view.getRenderWindow();
 
@@ -677,7 +682,8 @@ function createImageUI(
       viewerDOMId,
       volumeRepresentation,
       renderWindow,
-      isBackgroundDark
+      isBackgroundDark,
+      sliceSelectionHandle
     );
   }
 

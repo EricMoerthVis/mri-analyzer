@@ -31,8 +31,7 @@ function applyStyle(el, style) {
 
 const createViewer = (
   rootContainer,
-  { image, geometries, use2D = false, viewerStyle, viewerState } , tumorHandle
-) => {
+  { image, geometries, use2D = false, viewerStyle, viewerState } , tumorHandle, sliceSelectionHandle) => {
   userInterface.emptyContainer(rootContainer);
 
   const proxyManager = vtkProxyManager.newInstance({ proxyConfiguration });
@@ -158,7 +157,9 @@ const createViewer = (
       dataArray,
       view,
       isBackgroundDark,
-      use2D
+      use2D,
+      (value) => {console.log(value);}
+      // sliceSelectionHandle
     );
     const annotationContainer = container.querySelector('.js-se');
     annotationContainer.style.fontFamily = 'monospace';

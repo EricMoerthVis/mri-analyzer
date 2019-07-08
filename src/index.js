@@ -15,8 +15,8 @@ export function createViewerFromLocalFiles(container) {
   createFileDragAndDrop(container, processFiles);
 }
 
-export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle) {
-  return processFiles(container, {files: file, use2D}, tumorHandle);
+export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle, sliceSelectionHandle) {
+  return processFiles(container, {files: file, use2D}, tumorHandle, sliceSelectionHandle);
 }
 
 export function createViewerFromUrl(el, url, use2D = false, tumorHandle) {
