@@ -15,7 +15,11 @@ export function createViewerFromLocalFiles(container) {
   createFileDragAndDrop(container, processFiles);
 }
 
-export function createViewerFromUrl(el, url, use2D = false) {
+export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle) {
+  return processFiles(container, {files: file, use2D}, tumorHandle);
+}
+
+export function createViewerFromUrl(el, url, use2D = false, tumorHandle) {
   userInterface.emptyContainer(el);
   const progressCallback = userInterface.createLoadingProgress(el);
 
@@ -24,7 +28,7 @@ export function createViewerFromUrl(el, url, use2D = false) {
       [new Blob([arrayBuffer])],
       url.split('/').slice(-1)[0]
     );
-    return processFiles(el, { files: [file], use2D });
+    return processFiles(el, {files: [file], use2D}, tumorHandle);
   });
 }
 

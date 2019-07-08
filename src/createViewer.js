@@ -31,7 +31,7 @@ function applyStyle(el, style) {
 
 const createViewer = (
   rootContainer,
-  { image, geometries, use2D = false, viewerStyle, viewerState }
+  { image, geometries, use2D = false, viewerStyle, viewerState } , tumorHandle
 ) => {
   userInterface.emptyContainer(rootContainer);
 
@@ -144,7 +144,8 @@ const createViewer = (
     use2D,
     imageSource,
     imageRepresentation,
-    view
+    view,
+    tumorHandle
   );
 
   if (image) {

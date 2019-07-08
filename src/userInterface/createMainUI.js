@@ -28,7 +28,8 @@ function createMainUI(
   use2D,
   imageSource,
   imageRepresentation,
-  view
+  view,
+  tumorHandle
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);
@@ -435,6 +436,7 @@ function createMainUI(
   tumorWidget.setHandleSize(5);
   tumorWidget.setColorBasic([0.8157, 0.2392, 0.215686]);
   tumorWidget.setColorSelect([1, 0, 0]);
+  tumorWidget.setTumorHandle(tumorHandle);
   tumorWidget.setFaceHandlesEnabled(false);
   tumorWidget.setEdgeHandlesEnabled(false);
   tumorWidget.setCornerHandlesEnabled(true);

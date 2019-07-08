@@ -23,7 +23,7 @@ function typedArrayForBuffer(typedArrayType, buffer) {
   return new typedArrayFunction(buffer)
 }
 
-const processFiles = (container, { files, use2D }) => {
+const processFiles = (container, { files, use2D }, tumorHandle) => {
   userInterface.emptyContainer(container);
   userInterface.createLoadingProgress(container);
 
@@ -100,7 +100,7 @@ const processFiles = (container, { files, use2D }) => {
             image,
             geometries,
             use2D: !is3D,
-          })
+          }, tumorHandle)
         );
       })
       })

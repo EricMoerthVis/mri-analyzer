@@ -98,6 +98,10 @@ function vtkTumorWidget(publicAPI, model) {
     }
   };
 
+  publicAPI.setTumorHandle = (tumorHandle) => {
+    model.tumorHandle = tumorHandle;
+  };
+
   publicAPI.setVolumeMapper = (volumeMapper) => {
     if (volumeMapper !== model.volumeMapper) {
       model.volumeMapper = volumeMapper;
@@ -237,12 +241,15 @@ function vtkTumorWidget(publicAPI, model) {
 
       const bboxCorners = publicAPI.getCorners(planes);
       const handlePositions = publicAPI.planesToHandles(planes);
+      model.handlePosition = handlePositions;
       const handleSizes = handlePositions.map((handle) => {
         if (!handle) {
           return model.handleSize;
         }
         return publicAPI.adjustHandleSize(handle, model.handleSize);
       });
+
+      model.tumorHandle = [model.handlePosition[0][0], model.handlePosition[0][1], model.handlePosition[0][2], model.handleSize];
 
       model.widgetRep.set({
         activeHandleIndex,
