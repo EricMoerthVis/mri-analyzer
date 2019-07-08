@@ -249,7 +249,7 @@ function vtkTumorWidget(publicAPI, model) {
         return publicAPI.adjustHandleSize(handle, model.handleSize);
       });
 
-      model.tumorHandle = [model.handlePosition[0][0], model.handlePosition[0][1], model.handlePosition[0][2], model.handleSize];
+      model.tumorHandle([model.handlePosition[0][0], model.handlePosition[0][1], model.handlePosition[0][2], model.handleSize]);
 
       model.widgetRep.set({
         activeHandleIndex,
