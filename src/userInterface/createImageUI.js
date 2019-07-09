@@ -25,6 +25,7 @@ function createViewPlanesToggle(
   );
 
   let viewPlanes = false;
+
   function setViewPlanes() {
     viewPlanes = !viewPlanes;
     view.setViewPlanes(viewPlanes);
@@ -47,11 +48,11 @@ function createViewPlanesToggle(
   const viewPlanesButton = document.createElement('div');
   viewPlanesButton.innerHTML = `<input id="${viewerDOMId}-toggleSlicingPlanesButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="View planes [s]" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="View planes [s]" class="${
     contrastSensitiveStyle.tooltipButton
-  } ${style.viewPlanesButton} ${
+    } ${style.viewPlanesButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleSlicingPlanesButton">${viewPlansIcon}</label>`;
+    }" for="${viewerDOMId}-toggleSlicingPlanesButton">${viewPlansIcon}</label>`;
   viewPlanesButton.addEventListener('change', (event) => {
     setViewPlanes();
   });
@@ -73,11 +74,11 @@ function createUseShadowToggle(
   const useShadowButton = document.createElement('div');
   useShadowButton.innerHTML = `<input id="${viewerDOMId}-toggleShadowButton" type="checkbox" class="${
     style.toggleInput
-  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="Use shadow" class="${
+    }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="Use shadow" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.shadowButton} ${
+    } ${style.shadowButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleShadowButton">${shadowIcon}</label>`;
+    }" for="${viewerDOMId}-toggleShadowButton">${shadowIcon}</label>`;
   let useShadow = true;
   useShadowButton.addEventListener('change', (event) => {
     useShadow = !useShadow;
@@ -306,19 +307,20 @@ function createPlaneIndexSliders(
   currentSlicePosition = volumeRepresentation.getXSlice();
   xSliderEntry.innerHTML = `
     <label id="${viewerDOMId}-xSliceLabel" class="${
-      contrastSensitiveStyle.sliderLabel
+    contrastSensitiveStyle.sliderLabel
     }">X:</label><input type="range" min="${
     xSlice.min
-  }" max="${xSlice.max}" value="${currentSlicePosition}" step="${xSlice.step}"
+    }" max="${xSlice.max}" value="${currentSlicePosition}" step="${xSlice.step}"
       id="${viewerDOMId}-xSlice" class="${style.slider}" />`;
   const xSliceElement = xSliderEntry.querySelector(`#${viewerDOMId}-xSlice`);
   const xPlaneLabel = xSliderEntry.querySelector(
     `#${viewerDOMId}-xSliceLabel`
   );
+
   function updateXSlice() {
     const value = Number(xSliceElement.value);
     volumeRepresentation.setXSlice(value);
-    sliceSelectionHandle("x" + value.toString());
+    sliceSelectionHandle("x", value);
     const valueString = String(xSliceElement.value).substring(
       0,
       numberOfValueChars
@@ -331,9 +333,10 @@ function createPlaneIndexSliders(
     xPlaneLabel.innerHTML = `X: ${pad}${valueString}`;
     renderWindow.render();
   }
+
   xSliceElement.addEventListener('input', updateXSlice);
   xPlaneRow.appendChild(xSliderEntry);
-  updateXSlice();
+  // updateXSlice();
   xPlaneRow.style.display = 'none';
 
   uiContainer.appendChild(xPlaneRow);
@@ -347,19 +350,20 @@ function createPlaneIndexSliders(
   currentSlicePosition = volumeRepresentation.getYSlice();
   ySliderEntry.innerHTML = `
     <label id="${viewerDOMId}-ySliceLabel" class="${
-      contrastSensitiveStyle.sliderLabel
+    contrastSensitiveStyle.sliderLabel
     }">Y:</label><input type="range" min="${
     ySlice.min
-  }" max="${ySlice.max}" value="${currentSlicePosition}" step="${ySlice.step}"
+    }" max="${ySlice.max}" value="${currentSlicePosition}" step="${ySlice.step}"
       id="${viewerDOMId}-ySlice" class="${style.slider}" />`;
   const ySliceElement = ySliderEntry.querySelector(`#${viewerDOMId}-ySlice`);
   const yPlaneLabel = ySliderEntry.querySelector(
     `#${viewerDOMId}-ySliceLabel`
   );
+
   function updateYSlice() {
     const value = Number(ySliceElement.value);
     volumeRepresentation.setYSlice(value);
-    sliceSelectionHandle("y" + value.toString());
+    sliceSelectionHandle("y", value);
     const valueString = String(ySliceElement.value).substring(
       0,
       numberOfValueChars
@@ -372,9 +376,10 @@ function createPlaneIndexSliders(
     yPlaneLabel.innerHTML = `Y: ${pad}${valueString}`;
     renderWindow.render();
   }
+
   ySliceElement.addEventListener('input', updateYSlice);
   yPlaneRow.appendChild(ySliderEntry);
-  updateYSlice();
+  // updateYSlice();
   yPlaneRow.style.display = 'none';
 
   uiContainer.appendChild(yPlaneRow);
@@ -388,19 +393,20 @@ function createPlaneIndexSliders(
   currentSlicePosition = volumeRepresentation.getZSlice();
   zSliderEntry.innerHTML = `
     <label id="${viewerDOMId}-zSliceLabel" class="${
-      contrastSensitiveStyle.sliderLabel
+    contrastSensitiveStyle.sliderLabel
     }">Z:</label><input type="range" min="${
     zSlice.min
-  }" max="${zSlice.max}" value="${currentSlicePosition}" step="${zSlice.step}"
+    }" max="${zSlice.max}" value="${currentSlicePosition}" step="${zSlice.step}"
       id="${viewerDOMId}-zSlice" class="${style.slider}" />`;
   const zSliceElement = zSliderEntry.querySelector(`#${viewerDOMId}-zSlice`);
   const zPlaneLabel = zSliderEntry.querySelector(
     `#${viewerDOMId}-zSliceLabel`
   );
+
   function updateZSlice() {
     const value = Number(zSliceElement.value);
     volumeRepresentation.setZSlice(value);
-    sliceSelectionHandle("z" + value.toString());
+    sliceSelectionHandle("z", value);
     const valueString = String(zSliceElement.value).substring(
       0,
       numberOfValueChars
@@ -413,9 +419,10 @@ function createPlaneIndexSliders(
     zPlaneLabel.innerHTML = `Z: ${pad}${valueString}`;
     renderWindow.render();
   }
+
   zSliceElement.addEventListener('input', updateZSlice);
   zPlaneRow.appendChild(zSliderEntry);
-  updateZSlice();
+  // updateZSlice();
   zPlaneRow.style.display = 'none';
 
   uiContainer.appendChild(zPlaneRow);
@@ -522,6 +529,7 @@ function createColorPresetSelector(
     lookupTableProxy.setPresetName(presetSelector.value);
     renderWindow.render();
   }
+
   presetSelector.addEventListener('change', updateColorMap);
   uiContainer.appendChild(presetSelector);
   presetSelector.value = lookupTableProxy.getPresetName();
@@ -545,18 +553,20 @@ function createSampleDistanceSlider(
   sliderEntry.setAttribute('class', style.sliderEntry);
   sliderEntry.innerHTML = `
     <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Volume sampling distance" class="${
-      contrastSensitiveStyle.invertibleButton
+    contrastSensitiveStyle.invertibleButton
     } ${style.sampleDistanceButton}">
       ${sampleDistanceIcon}
     </div>
     <input type="range" min="0" max="1" value="0.3" step="0.01"
       class="${style.slider} ${viewerDOMId}-spacing" />`;
   const spacingElement = sliderEntry.querySelector(`.${viewerDOMId}-spacing`);
+
   function updateSpacing() {
     const value = Number(spacingElement.value);
     volumeRepresentation.setSampleDistance(value);
     renderWindow.render();
   }
+
   spacingElement.addEventListener('input', updateSpacing);
   updateSpacing();
   uiContainer.appendChild(sliderEntry);
@@ -578,7 +588,7 @@ function createGradientOpacitySlider(
   sliderEntry.setAttribute('class', style.sliderEntry);
   sliderEntry.innerHTML = `
     <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Gradient opacity" class="${
-      contrastSensitiveStyle.invertibleButton
+    contrastSensitiveStyle.invertibleButton
     } ${style.gradientOpacitySlider}">
       ${gradientOpacityIcon}
     </div>
@@ -588,11 +598,13 @@ function createGradientOpacitySlider(
   const edgeElement = sliderEntry.querySelector(
     `#${viewerDOMId}-gradientOpacitySlider`
   );
+
   function updateGradientOpacity() {
     const value = Number(edgeElement.value);
     volumeRepresentation.setEdgeGradient(value);
     renderWindow.render();
   }
+
   edgeElement.addEventListener('input', updateGradientOpacity);
   updateGradientOpacity();
   uiContainer.appendChild(sliderEntry);
@@ -689,7 +701,7 @@ function createImageUI(
 
   uiContainer.appendChild(imageUIGroup);
 
-  return { transferFunctionWidget, updateGradientOpacity, updateColorMap };
+  return {transferFunctionWidget, updateGradientOpacity, updateColorMap};
 }
 
 export default createImageUI;

@@ -144,7 +144,8 @@ const createViewer = (
     imageSource,
     imageRepresentation,
     view,
-    tumorHandle
+    tumorHandle,
+    sliceSelectionHandle
   );
 
   if (image) {
@@ -158,7 +159,7 @@ const createViewer = (
       view,
       isBackgroundDark,
       use2D,
-      (value) => {console.log(value);}
+      sliceSelectionHandle
       // sliceSelectionHandle
     );
     const annotationContainer = container.querySelector('.js-se');

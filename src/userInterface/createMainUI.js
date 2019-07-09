@@ -29,7 +29,8 @@ function createMainUI(
   imageSource,
   imageRepresentation,
   view,
-  tumorHandle
+  tumorHandle,
+  sliceSelectionHandle
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);
@@ -194,6 +195,7 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
+      sliceSelectionHandle("x",document.getElementById(`${viewerDOMId}-xSlice`).value);
     }
   }
   function setViewModeYPlane() {
@@ -215,6 +217,7 @@ function createMainUI(
       yPlaneRow.style.display = 'flex';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
+      sliceSelectionHandle("y",document.getElementById(`${viewerDOMId}-ySlice`).value);
     }
   }
   function setViewModeZPlane() {
@@ -236,6 +239,7 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'flex';
+      sliceSelectionHandle("z",document.getElementById(`${viewerDOMId}-zSlice`).value);
     }
   }
   function setViewModeVolumeRendering() {

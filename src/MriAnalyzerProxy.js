@@ -34,7 +34,7 @@ function MriAnalyzerProxy(publicAPI, model) {
         );
         model.camera.setPhysicalTranslation(
           ...model.volumeRenderingCameraState.physicalTranslation
-        );MriAnalyzer
+        );
       }
       model.camera.setParallelProjection(false);
       if (model.volumeRepresentation) {
