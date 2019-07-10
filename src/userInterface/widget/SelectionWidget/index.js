@@ -3,15 +3,15 @@ import vtkMath from "vtk.js/Sources/Common/Core/Math";
 import vtkPlane from "vtk.js/Sources/Common/DataModel/Plane";
 import vtkPointPicker from "vtk.js/Sources/Rendering/Core/PointPicker";
 import vtkAbstractWidget from "vtk.js/Sources/Interaction/Widgets/AbstractWidget";
-import vtkTumorSelectRepresentation from "../TumorSelectRepresentation";
+import vtkSelectionRepresentation from "../SelectionRepresentation";
 import Constants from "./Constants";
-import { vec3, mat4 } from "gl-matrix";
+import {vec3, mat4} from "gl-matrix";
 
-const { vtkErrorMacro, VOID, EVENT_ABORT } = macro;
-const { TOTAL_NUM_HANDLES, WidgetState, CropWidgetEvents } = Constants;
+const {vtkErrorMacro, VOID, EVENT_ABORT} = macro;
+const {TOTAL_NUM_HANDLES, WidgetState, CropWidgetEvents} = Constants;
 
 // ----------------------------------------------------------------------------
-// vtkTumorWidget methods
+// vtkSelectionWidget methods
 // ----------------------------------------------------------------------------
 function arrayEquals(a, b) {
   if (a.length === b.length) {
@@ -26,11 +26,11 @@ function arrayEquals(a, b) {
 }
 
 
-function vtkTumorWidget(publicAPI, model) {
+function vtkSelectionWidget(publicAPI, model) {
   model.colorInitial = [1, 1, 1];
   model.colorSelect = [0, 1, 0];
   // Set our className
-  model.classHierarchy.push("vtkTumorWidget");
+  model.classHierarchy.push("vtkSelectionWidget");
 
   const annotationPicker = vtkPointPicker.newInstance();
   annotationPicker.setPickFromList(1);
@@ -60,7 +60,7 @@ function vtkTumorWidget(publicAPI, model) {
   // Overriden method
   publicAPI.createDefaultRepresentation = () => {
     if (!model.widgetRep) {
-      model.widgetRep = vtkTumorSelectRepresentation.newInstance();
+      model.widgetRep = vtkSelectionRepresentation.newInstance();
       model.widgetRep.setColorInitial(model.colorInitial);
       model.widgetRep.setColorSelect(model.colorSelect);
       publicAPI.updateRepresentation();
@@ -98,8 +98,8 @@ function vtkTumorWidget(publicAPI, model) {
     }
   };
 
-  publicAPI.setTumorHandle = (tumorHandle) => {
-    model.tumorHandle = tumorHandle;
+  publicAPI.setSelectionHandle = (selectionHandle) => {
+    model.selectionHandle = selectionHandle;
   };
 
   publicAPI.setVolumeMapper = (volumeMapper) => {
@@ -201,7 +201,7 @@ function vtkTumorWidget(publicAPI, model) {
   };
 
   /**
-   * Enables the control of the tumor selector
+   * Enables the control of the selector
    * @param enabled
    *    If enabled the control is carried out
    */
@@ -214,9 +214,9 @@ function vtkTumorWidget(publicAPI, model) {
   };
 
   /**
-   * Used to control the size of the tumor selection
+   * Used to control the size of the selection
    * @param size
-   *    The size the tumor selector should have
+   *    The size the selector should have
    */
   publicAPI.setHandleSize = (size) => {
     if (model.handleSize !== size) {
@@ -229,7 +229,7 @@ function vtkTumorWidget(publicAPI, model) {
   publicAPI.getCroppingPlanes = () => model.widgetState.planes.slice();
 
   publicAPI.setCroppingPlanes = (...planes) => {
-    publicAPI.updateWidgetState({ planes });
+    publicAPI.updateWidgetState({planes});
   };
 
   publicAPI.updateRepresentation = () => {
@@ -237,7 +237,7 @@ function vtkTumorWidget(publicAPI, model) {
       const bounds = model.volumeMapper.getBounds();
       model.widgetRep.placeWidget(...bounds);
 
-      const { activeHandleIndex, planes } = model.widgetState;
+      const {activeHandleIndex, planes} = model.widgetState;
 
       const bboxCorners = publicAPI.getCorners(planes);
       const handlePositions = publicAPI.planesToHandles(planes);
@@ -249,7 +249,9 @@ function vtkTumorWidget(publicAPI, model) {
         return publicAPI.adjustHandleSize(handle, model.handleSize);
       });
 
-      model.tumorHandle([model.handlePosition[0][0], model.handlePosition[0][1], model.handlePosition[0][2], model.handleSize]);
+      if (model.selectionHandle != null) {
+        model.selectionHandle([model.handlePosition[0][0], model.handlePosition[0][1], model.handlePosition[0][2], model.handleSize]);
+      }
 
       model.widgetRep.set({
         activeHandleIndex,
@@ -379,7 +381,7 @@ function vtkTumorWidget(publicAPI, model) {
   ;
 
   publicAPI.moveAction = (callData) => {
-    const { controlState, planes, activeHandleIndex } = model.widgetState;
+    const {controlState, planes, activeHandleIndex} = model.widgetState;
     if (controlState === WidgetState.IDLE || activeHandleIndex === -1) {
       return VOID;
     }
@@ -466,16 +468,16 @@ export function extend(publicAPI, model, initialValues = {}) {
   ]);
 
   // Object methods
-  vtkTumorWidget(publicAPI, model);
+  vtkSelectionWidget(publicAPI, model);
 }
 
 // ----------------------------------------------------------------------------
 
 export const newInstance = macro.newInstance(
   extend,
-  "vtkTumorWidget"
+  "vtkSelectionWidget"
 );
 
 // ----------------------------------------------------------------------------
 
-export default { newInstance, extend };
+export default {newInstance, extend};

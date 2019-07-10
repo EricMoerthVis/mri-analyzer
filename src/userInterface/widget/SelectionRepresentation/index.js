@@ -6,12 +6,12 @@ import vtkWidgetRepresentation from "vtk.js/Sources/Interaction/Widgets/WidgetRe
 import vtkMapper from "vtk.js/Sources/Rendering/Core/Mapper";
 import vtkPolyData from "vtk.js/Sources/Common/DataModel/PolyData";
 import vtkSphereSource from "vtk.js/Sources/Filters/Sources/SphereSource";
-import Constants from "../TumorWidget/Constants";
+import Constants from "../SelectionWidget/Constants";
 
 const { TOTAL_NUM_HANDLES } = Constants;
 
 // ----------------------------------------------------------------------------
-// vtkTumorSelectRepresentation methods
+// vtkSelectionRepresentation methods
 // ----------------------------------------------------------------------------
 
 // Reorders a bounds array such that each (a,b) pairing is a
@@ -26,9 +26,9 @@ function reorderBounds(bounds) {
   }
 }
 
-function vtkTumorSelectRepresentation(publicAPI, model) {
+function vtkSelectionRepresentation(publicAPI, model) {
   // Set our className
-  model.classHierarchy.push("vtkTumorSelectRepresentation");
+  model.classHierarchy.push("vtkSelectionRepresentation");
 
   // set fields from parent classes
   model.placeFactor = 1;
@@ -233,14 +233,14 @@ export function extend(publicAPI, model, initialValues = {}) {
   macro.setGetArray(publicAPI, model, ["bboxCorners"], 1);
 
   // Object methods
-  vtkTumorSelectRepresentation(publicAPI, model);
+  vtkSelectionRepresentation(publicAPI, model);
 }
 
 // ----------------------------------------------------------------------------
 
 export const newInstance = macro.newInstance(
   extend,
-  "vtkTumorSelectRepresentation"
+  "vtkSelectionRepresentation"
 );
 
 // ----------------------------------------------------------------------------
