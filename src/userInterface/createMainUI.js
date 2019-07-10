@@ -1,6 +1,6 @@
 import macro from 'vtk.js/Sources/macro';
 import vtkImageCroppingRegionsWidget from 'vtk.js/Sources/Interaction/Widgets/ImageCroppingRegionsWidget';
-import vtkTumorSelectWidget from "./widget/SelectionWidget";
+import vtkTumorSelectWidget from './widget/SelectionWidget';
 
 import getContrastSensitiveStyle from './getContrastSensitiveStyle';
 
@@ -18,8 +18,8 @@ import interpolationIcon from './icons/interpolation.svg';
 import cropIcon from './icons/crop.svg';
 import resetCropIcon from './icons/reset-crop.svg';
 import resetCameraIcon from './icons/reset-camera.svg';
-import tumorIcon from "./icons/tumor.svg";
-import controlIcon from "./icons/control.svg";
+import tumorIcon from './icons/tumor.svg';
+import controlIcon from './icons/control.svg';
 
 function createMainUI(
   rootContainer,
@@ -39,7 +39,7 @@ function createMainUI(
 
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['invertibleButton', 'tooltipButton'],
-    isBackgroundDark
+    isBackgroundDark,
   );
 
   const mainUIGroup = document.createElement('div');
@@ -55,8 +55,7 @@ function createMainUI(
   function toggleUIVisibility() {
     const elements = uiContainer.querySelectorAll(`.${viewerDOMId}-toggle`);
     let count = elements.length;
-    const collapsed =
-      toggleUserInterfaceButton.getAttribute('collapsed') === 'true';
+    const collapsed = toggleUserInterfaceButton.getAttribute('collapsed') === 'true';
     if (collapsed) {
       while (count--) {
         elements[count].style.display = 'flex';
@@ -140,7 +139,7 @@ function createMainUI(
         container.style.height = oldHeight;
         fullscreenButtonInput.checked = false;
       }
-    })
+    });
     mainUIRow.appendChild(fullscreenButton);
   }
 
@@ -193,11 +192,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -206,7 +205,9 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
-      sliceSelectionHandle("x", document.getElementById(`${viewerDOMId}-xSlice`).value);
+      if (sliceSelectionHandle != null) {
+        sliceSelectionHandle('x', document.getElementById(`${viewerDOMId}-xSlice`).value);
+      }
     }
   }
 
@@ -216,11 +217,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = true;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -229,7 +230,9 @@ function createMainUI(
       yPlaneRow.style.display = 'flex';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
-      sliceSelectionHandle("y", document.getElementById(`${viewerDOMId}-ySlice`).value);
+      if (sliceSelectionHandle != null) {
+        sliceSelectionHandle('y', document.getElementById(`${viewerDOMId}-ySlice`).value);
+      }
     }
   }
 
@@ -239,11 +242,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = true;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -252,7 +255,9 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'flex';
-      sliceSelectionHandle("z", document.getElementById(`${viewerDOMId}-zSlice`).value);
+      if (sliceSelectionHandle != null) {
+        sliceSelectionHandle('z', document.getElementById(`${viewerDOMId}-zSlice`).value);
+      }
     }
   }
 
@@ -262,15 +267,15 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = true;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'flex';
       const viewPlanes = document.getElementById(
-        `${viewerDOMId}-toggleSlicingPlanesButton`
+        `${viewerDOMId}-toggleSlicingPlanesButton`,
       ).checked;
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
       const yPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-y-plane-row`);
@@ -333,11 +338,11 @@ function createMainUI(
     mainUIRow.appendChild(volumeRenderingButton);
   }
 
-  let croppingWidget = null
+  let croppingWidget = null;
   let addCroppingPlanesChangedHandler = () => {
-  }
+  };
   let addResetCropHandler = () => {
-  }
+  };
   if (imageRepresentation) {
     croppingWidget = vtkImageCroppingRegionsWidget.newInstance();
     croppingWidget.setHandleSize(22);
@@ -475,7 +480,7 @@ function createMainUI(
   tumorWidget.setEnabled(false);
   tumorWidget.setVolumeMapper(imageRepresentation.getMapper());
 
-  //const widgetSphereRep = vtkSphereHandleRepresentation.newInstance();
+  // const widgetSphereRep = vtkSphereHandleRepresentation.newInstance();
 
   let tumorSelectionEnabled = false;
 
@@ -484,7 +489,7 @@ function createMainUI(
     tumorWidget.setEnabled(tumorSelectionEnabled);
   }
 
-  const tumorButton = document.createElement("div");
+  const tumorButton = document.createElement('div');
   tumorButton.innerHTML = `<input id="${viewerDOMId}-toggleTumorSelector" type="checkbox" class="${
     style.toggleInput
     }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Tumor" class="${
@@ -492,7 +497,7 @@ function createMainUI(
     } ${style.tumorButton} ${
     style.toggleButton
     }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
-  tumorButton.addEventListener("change", (event) => {
+  tumorButton.addEventListener('change', (event) => {
     toggleTumorSelection();
   });
   mainUIRow.appendChild(tumorButton);
@@ -518,7 +523,7 @@ function createMainUI(
     compareWidget.setEnabled(controlSelectionEnabled);
   }
 
-  const compareButton = document.createElement("div");
+  const compareButton = document.createElement('div');
   compareButton.innerHTML = `<input id="${viewerDOMId}-toggleControlSelector" type="checkbox" class="${
     style.toggleInput
     }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Control area" class="${
@@ -526,14 +531,16 @@ function createMainUI(
     } ${style.compareButton} ${
     style.toggleButton
     }" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
-  compareButton.addEventListener("change", (event) => {
+  compareButton.addEventListener('change', (event) => {
     toggleControlSelection();
   });
   mainUIRow.appendChild(compareButton);
 
   uiContainer.appendChild(mainUIGroup);
 
-  return {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler};
+  return {
+    uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler,
+  };
 }
 
 export default createMainUI;

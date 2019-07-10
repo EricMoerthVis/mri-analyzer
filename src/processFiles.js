@@ -33,7 +33,6 @@ const processFiles = (container, {files, use2D}, tumorHandle, sliceSelectionHand
       webWorker.terminate()
       const imageData = vtkITKHelper.convertItkToVtkImage(itkImage);
       const is3D = itkImage.imageType.dimension === 3 && !use2D;
-
       resolve(
         createViewer(container, {
           image: imageData,

@@ -320,7 +320,9 @@ function createPlaneIndexSliders(
   function updateXSlice() {
     const value = Number(xSliceElement.value);
     volumeRepresentation.setXSlice(value);
-    sliceSelectionHandle("x", value);
+    if (sliceSelectionHandle != null) {
+      sliceSelectionHandle("x", value);
+    }
     const valueString = String(xSliceElement.value).substring(
       0,
       numberOfValueChars
@@ -363,7 +365,9 @@ function createPlaneIndexSliders(
   function updateYSlice() {
     const value = Number(ySliceElement.value);
     volumeRepresentation.setYSlice(value);
-    sliceSelectionHandle("y", value);
+    if (sliceSelectionHandle != null) {
+      sliceSelectionHandle("y", value);
+    }
     const valueString = String(ySliceElement.value).substring(
       0,
       numberOfValueChars
@@ -406,7 +410,9 @@ function createPlaneIndexSliders(
   function updateZSlice() {
     const value = Number(zSliceElement.value);
     volumeRepresentation.setZSlice(value);
-    sliceSelectionHandle("z", value);
+    if (sliceSelectionHandle != null) {
+      sliceSelectionHandle("z", value);
+    }
     const valueString = String(zSliceElement.value).substring(
       0,
       numberOfValueChars
