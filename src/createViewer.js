@@ -160,8 +160,7 @@ const createViewer = (
       view,
       isBackgroundDark,
       use2D,
-      sliceSelectionHandle
-      // sliceSelectionHandle
+      sliceSelectionHandle,
     );
     const annotationContainer = container.querySelector('.js-se');
     annotationContainer.style.fontFamily = 'monospace';

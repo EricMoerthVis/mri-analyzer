@@ -206,7 +206,7 @@ function createMainUI(
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
       if (sliceSelectionHandle != null) {
-        sliceSelectionHandle('x', document.getElementById(`${viewerDOMId}-xSlice`).value);
+        // sliceSelectionHandle('x', document.getElementById(`${viewerDOMId}-xSlice`).value);
       }
     }
   }
@@ -231,7 +231,7 @@ function createMainUI(
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
       if (sliceSelectionHandle != null) {
-        sliceSelectionHandle('y', document.getElementById(`${viewerDOMId}-ySlice`).value);
+        // sliceSelectionHandle('y', document.getElementById(`${viewerDOMId}-ySlice`).value);
       }
     }
   }
@@ -256,7 +256,7 @@ function createMainUI(
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'flex';
       if (sliceSelectionHandle != null) {
-        sliceSelectionHandle('z', document.getElementById(`${viewerDOMId}-zSlice`).value);
+        // sliceSelectionHandle('z', document.getElementById(`${viewerDOMId}-zSlice`).value);
       }
     }
   }
