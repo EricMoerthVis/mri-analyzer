@@ -1,6 +1,6 @@
 {
   "name": "mri-analyzer",
-  "version": "1.0.0-rc.2",
+  "version": "1.0.0-rc.5",
   "description": "MRI Analyzer",
   "repository": {
     "type": "git",
@@ -19,10 +19,12 @@
     "curry": "^1.2.0",
     "debug": "^4.1.1",
     "express": "^4.16.4",
+    "http-server": "^0.11.1",
     "itk": "^9.3.2",
     "mousetrap": "^1.6.2",
     "opn": "^5.3.0",
-    "vtk.js": "^8.3.10"
+    "vtk.js": "^8.3.10",
+    "ws": "^7.0.1"
   },
   "devDependencies": {
     "@babel/preset-env": "^7.2.0",

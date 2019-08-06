@@ -31,11 +31,10 @@ function applyStyle(el, style) {
 
 const createViewer = (
   rootContainer,
-  { image, geometries, use2D = false, viewerStyle, viewerState }
-) => {
+  {image, geometries, use2D = false, viewerStyle, viewerState}, tumorHandle, compareHandle, sliceSelectionHandle) => {
   userInterface.emptyContainer(rootContainer);
 
-  const proxyManager = vtkProxyManager.newInstance({ proxyConfiguration });
+  const proxyManager = vtkProxyManager.newInstance({proxyConfiguration});
   window.addEventListener('resize', proxyManager.resizeAllViews);
 
   const container = document.createElement('div');
@@ -137,14 +136,17 @@ const createViewer = (
       .toString()
       .replace('.', '');
 
-  const { uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler } = userInterface.createMainUI(
+  const {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler} = userInterface.createMainUI(
     rootContainer,
     viewerDOMId,
     isBackgroundDark,
     use2D,
     imageSource,
     imageRepresentation,
-    view
+    view,
+    tumorHandle,
+    compareHandle,
+    sliceSelectionHandle
   );
 
   if (image) {
@@ -157,7 +159,8 @@ const createViewer = (
       dataArray,
       view,
       isBackgroundDark,
-      use2D
+      use2D,
+      sliceSelectionHandle,
     );
     const annotationContainer = container.querySelector('.js-se');
     annotationContainer.style.fontFamily = 'monospace';
@@ -228,7 +231,7 @@ const createViewer = (
       toggleUserInterfaceCollapsedHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   // Start collapsed on mobile devices or small pages
@@ -261,7 +264,7 @@ const createViewer = (
       toggleAnnotationsHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   publicAPI.setAnnotationsEnabled = (enabled) => {
@@ -291,7 +294,7 @@ const createViewer = (
       toggleFullscreenHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   publicAPI.setFullscreenEnabled = (enabled) => {
@@ -321,7 +324,7 @@ const createViewer = (
       toggleInterpolationHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   publicAPI.setInterpolationEnabled = (enabled) => {
@@ -351,7 +354,7 @@ const createViewer = (
       toggleCroppingPlanesHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   publicAPI.setCroppingPlanesEnabled = (enabled) => {
@@ -390,7 +393,7 @@ const createViewer = (
       selectColorMapHandlers[index] = null;
     }
 
-    return Object.freeze({ unsubscribe });
+    return Object.freeze({unsubscribe});
   };
 
   publicAPI.setColorMap = (colorMap) => {
@@ -444,7 +447,7 @@ const createViewer = (
         viewModeChangedHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     publicAPI.setViewMode = (mode) => {
@@ -490,7 +493,7 @@ const createViewer = (
         xSliceChangedHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     const ySliceChangedHandlers = [];
@@ -509,7 +512,7 @@ const createViewer = (
         ySliceChangedHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     const zSliceChangedHandlers = [];
@@ -528,7 +531,7 @@ const createViewer = (
         zSliceChangedHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
 
@@ -551,7 +554,7 @@ const createViewer = (
         toggleShadowHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     publicAPI.setShadowEnabled = (enabled) => {
@@ -581,7 +584,7 @@ const createViewer = (
         toggleSlicingPlanesHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     publicAPI.setSlicingPlanesEnabled = (enabled) => {
@@ -611,7 +614,7 @@ const createViewer = (
         gradientOpacitySliderHandlers[index] = null;
       }
 
-      return Object.freeze({ unsubscribe });
+      return Object.freeze({unsubscribe});
     };
 
     publicAPI.setGradientOpacity = (opacity) => {
