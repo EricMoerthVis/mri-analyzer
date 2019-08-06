@@ -38,7 +38,7 @@ function MriAnalyzerProxy(publicAPI, model) {
       }
       model.camera.setParallelProjection(false);
       if (model.volumeRepresentation) {
-        model.volumeRepresentation.setSliceVisibility(model.viewPlanes);
+        model.volumeRepresentation.vtkTumorSelectRepresentationVisibility(model.viewPlanes);
         model.volumeRepresentation.setVolumeVisibility(true);
       }
     } else {
@@ -59,10 +59,10 @@ function MriAnalyzerProxy(publicAPI, model) {
           publicAPI.updateOrientation(0, 1, [0, 0, 1]);
           break;
         case 1:
-          publicAPI.updateOrientation(1, -1, [0, 0, 1]);
+          publicAPI.updateOrientation(1, 1, [0, 0, 1]);
           break;
         case 2:
-          publicAPI.updateOrientation(2, -1, [0, -1, 0]);
+          publicAPI.updateOrientation(2, 1, [0, 1, 0]);
           break;
         default:
           vtkErrorMacro('Unexpected view mode');
