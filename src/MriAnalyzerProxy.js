@@ -38,7 +38,7 @@ function MriAnalyzerProxy(publicAPI, model) {
       }
       model.camera.setParallelProjection(false);
       if (model.volumeRepresentation) {
-        model.volumeRepresentation.vtkTumorSelectRepresentationVisibility(model.viewPlanes);
+        // model.volumeRepresentation.vtkTumorSelectRepresentationVisibility(model.viewPlanes);
         model.volumeRepresentation.setVolumeVisibility(true);
       }
     } else {
