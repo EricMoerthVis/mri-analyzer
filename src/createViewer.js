@@ -31,7 +31,7 @@ function applyStyle(el, style) {
 
 const createViewer = (
   rootContainer,
-  {image, geometries, use2D = false, viewerStyle, viewerState}, tumorHandle, compareHandle, sliceSelectionHandle) => {
+  {image, geometries, use2D = false, viewerStyle, viewerState}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle) => {
   userInterface.emptyContainer(rootContainer);
 
   const proxyManager = vtkProxyManager.newInstance({proxyConfiguration});
@@ -146,7 +146,8 @@ const createViewer = (
     view,
     tumorHandle,
     compareHandle,
-    sliceSelectionHandle
+    sliceSelectionHandle,
+    boundingBoxHandle
   );
 
   if (image) {

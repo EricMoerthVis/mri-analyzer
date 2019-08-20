@@ -32,6 +32,7 @@ function createMainUI(
   tumorHandle,
   compareHandle,
   sliceSelectionHandle,
+  boundingBoxHandle
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);
@@ -39,7 +40,7 @@ function createMainUI(
 
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['invertibleButton', 'tooltipButton'],
-    isBackgroundDark,
+    isBackgroundDark
   );
 
   const mainUIGroup = document.createElement('div');
@@ -96,7 +97,7 @@ function createMainUI(
     ['requestFullscreen', 'exitFullscreen', 'fullscreenchange', 'fullscreen'],
     ['mozRequestFullScreen', 'mozCancelFullScreen', 'mozfullscreenchange', 'mozFullScreen'],
     ['msRequestFullscreen', 'msExitFullscreen', 'MSFullscreenChange', 'msFullscreenEnabled'],
-    ['webkitRequestFullscreen', 'webkitExitFullscreen', 'webkitfullscreenchange', 'webkitIsFullScreen'],
+    ['webkitRequestFullscreen', 'webkitExitFullscreen', 'webkitfullscreenchange', 'webkitIsFullScreen']
   ].forEach((methods) => {
     if (body[methods[0]] && !fullScreenMethods) {
       fullScreenMethods = methods;
@@ -192,11 +193,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`,
+      `${viewerDOMId}-volumeRenderingButton`
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`,
+        `.${viewerDOMId}-volumeRendering`
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -217,11 +218,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = true;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`,
+      `${viewerDOMId}-volumeRenderingButton`
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`,
+        `.${viewerDOMId}-volumeRendering`
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -242,11 +243,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = true;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`,
+      `${viewerDOMId}-volumeRenderingButton`
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`,
+        `.${viewerDOMId}-volumeRendering`
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -267,15 +268,15 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`,
+      `${viewerDOMId}-volumeRenderingButton`
     ).checked = true;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`,
+        `.${viewerDOMId}-volumeRendering`
       );
       volumeRenderingRow.style.display = 'flex';
       const viewPlanes = document.getElementById(
-        `${viewerDOMId}-toggleSlicingPlanesButton`,
+        `${viewerDOMId}-toggleSlicingPlanesButton`
       ).checked;
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
       const yPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-y-plane-row`);
@@ -361,7 +362,7 @@ function createMainUI(
         croppingPlanesChangedHandlers[index] = null;
       }
 
-      return Object.freeze({unsubscribe});
+      return Object.freeze({ unsubscribe });
     };
     let croppingUpdateInProgress = false;
     const setCroppingPlanes = () => {
@@ -372,6 +373,10 @@ function createMainUI(
       const planes = croppingWidget.getWidgetState().planes;
       imageRepresentation.setCroppingPlanes(planes);
       const bboxCorners = croppingWidget.planesToBBoxCorners(planes);
+      console.log(bboxCorners);
+      if (boundingBoxHandle != null) {
+        boundingBoxHandle(bboxCorners);
+      }
       croppingPlanesChangedHandlers.forEach((handler) => {
         handler.call(null, planes, bboxCorners);
       });
@@ -416,11 +421,12 @@ function createMainUI(
         resetCropHandlers[index] = null;
       }
 
-      return Object.freeze({unsubscribe});
+      return Object.freeze({ unsubscribe });
     };
 
     function resetCrop() {
-      imageRepresentation.getCropFilter().reset();
+      imageRepresentation.getCropFilter()
+        .reset();
       croppingWidget.resetWidgetState();
       resetCropHandlers.forEach((handler) => {
         handler.call(null);
@@ -539,7 +545,10 @@ function createMainUI(
   uiContainer.appendChild(mainUIGroup);
 
   return {
-    uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler,
+    uiContainer,
+    croppingWidget,
+    addCroppingPlanesChangedHandler,
+    addResetCropHandler
   };
 }
 
