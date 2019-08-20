@@ -18,3 +18,4 @@ test/TESTS-*.xml
 /.idea/vagrant.xml
 /.idea/vcs.xml
 /.idea/workspace.xml
+/dist/serviceWorker.js
