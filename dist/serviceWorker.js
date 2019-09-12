@@ -3,20 +3,20 @@ importScripts('workbox-sw.prod.v2.1.2.js');
 const workboxSW = new self.WorkboxSW({clientsClaim: true})
 workboxSW.precache([
   {
-    "url": "f3e03688349fb4c74feffa72b74d14c1.png",
-    "revision": "f3e03688349fb4c74feffa72b74d14c1"
-  },
-  {
     "url": "favicon-32x32.png",
     "revision": "c0cef3b49c40bc4d9cad6d6499cfe6f7"
   },
   {
     "url": "index.html",
-    "revision": "076a32d16c50b012aab0be29d567160d"
+    "revision": "916feca2bee2f3f91cd8cb9c0566a846"
   },
   {
     "url": "mriAnalyzer.js",
-    "revision": "49c8549c40c253327381ea8596ada7e7"
+    "revision": "5ed163193d0163786554d6e8e4edfa7a"
+  },
+  {
+    "url": "picture.png",
+    "revision": "f3e03688349fb4c74feffa72b74d14c1"
   }
 ])
 

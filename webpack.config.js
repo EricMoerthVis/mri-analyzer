@@ -1,5 +1,7 @@
+// eslint-disable-next-line no-unused-vars
 const webpack = require('webpack');
 const path = require('path');
+// eslint-disable-next-line no-unused-vars
 const autoprefixer = require('autoprefixer');
 
 const CopyPlugin = require('copy-webpack-plugin');
@@ -15,8 +17,8 @@ const cssRules = require('vtk.js/Utilities/config/dependency.js').webpack.css.ru
 
 const devServer = {
   noInfo: true,
-  stats: 'minimal'
-}
+  stats: 'minimal',
+};
 
 module.exports = {
   node: {
@@ -29,35 +31,47 @@ module.exports = {
   },
   module: {
     rules: [
-      { test: entry, loader: 'expose-loader?mriAnalyzer' },
-      { test: /\.js$/, loader: 'babel-loader' },
-      { test: /\.(png|jpg)$/, use: 'url-loader?limit=81920' },
-      { test: /\.svg$/, use: [{ loader: 'raw-loader' }], },
+      {
+        test: entry,
+        loader: 'expose-loader?mriAnalyzer',
+      },
+      {
+        test: /\.js$/,
+        loader: 'babel-loader',
+      },
+      {
+        test: /\.(png|jpg)$/,
+        use: 'url-loader?limit=81920',
+      },
+      {
+        test: /\.svg$/,
+        use: [{ loader: 'raw-loader' }],
+      },
     ].concat(vtkRules, cssRules),
   },
   plugins: [
     new CopyPlugin([
       {
-      from: path.join(__dirname, 'node_modules', 'workbox-sw',
-        'build', 'importScripts', 'workbox-sw.prod.*.js'),
-      flatten: true,
-      to: path.join(__dirname, 'dist'),
+        from: path.join(__dirname, 'node_modules', 'workbox-sw',
+          'build', 'importScripts', 'workbox-sw.prod.*.js'),
+        flatten: true,
+        to: path.join(__dirname, 'dist'),
       },
       {
-      from: path.join(__dirname, 'node_modules', 'itk', 'WebWorkers'),
-      to: path.join(__dirname, 'dist', 'itk', 'WebWorkers'),
+        from: path.join(__dirname, 'node_modules', 'itk', 'WebWorkers'),
+        to: path.join(__dirname, 'dist', 'itk', 'WebWorkers'),
       },
       {
-      from: path.join(__dirname, 'node_modules', 'itk', 'ImageIOs'),
-      to: path.join(__dirname, 'dist', 'itk', 'ImageIOs'),
+        from: path.join(__dirname, 'node_modules', 'itk', 'ImageIOs'),
+        to: path.join(__dirname, 'dist', 'itk', 'ImageIOs'),
       },
       {
-      from: path.join(__dirname, 'node_modules', 'itk', 'MeshIOs'),
-      to: path.join(__dirname, 'dist', 'itk', 'MeshIOs'),
+        from: path.join(__dirname, 'node_modules', 'itk', 'MeshIOs'),
+        to: path.join(__dirname, 'dist', 'itk', 'MeshIOs'),
       },
       {
-      from: path.join(__dirname, 'node_modules', 'itk', 'Pipelines'),
-      to: path.join(__dirname, 'dist', 'itk', 'Pipelines'),
+        from: path.join(__dirname, 'node_modules', 'itk', 'Pipelines'),
+        to: path.join(__dirname, 'dist', 'itk', 'Pipelines'),
       },
     ]),
     // workbox plugin should be last plugin
@@ -68,8 +82,8 @@ module.exports = {
       globIgnores: [
         'serviceWorker.js',
       ],
-    swSrc: path.join('src', 'serviceWorker.js'),
-    swDest: path.join('dist', 'serviceWorker.js'),
+      swSrc: path.join('src', 'serviceWorker.js'),
+      swDest: path.join('dist', 'serviceWorker.js'),
     }),
     new WebPackBar(),
   ],
@@ -81,8 +95,8 @@ module.exports = {
     ],
   },
   performance: {
-      maxAssetSize: 15000000,
-      maxEntrypointSize: 15000000
+    maxAssetSize: 15000000,
+    maxEntrypointSize: 15000000,
   },
   devServer,
 };
