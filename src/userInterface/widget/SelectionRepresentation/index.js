@@ -67,14 +67,14 @@ function vtkSelectionRepresentation(publicAPI, model) {
 
   // methods
   publicAPI.setColorInitial = (color) => {
-    console.log("Set color Initial " + color);
+    // console.log("Set color Initial " + color);
     model.colorInitial = color;
     publicAPI.updateGeometry();
   };
 
   publicAPI.setColorSelect = (color) => {
-    console.log("Set color select " + color);
-    console.log("Set color select " + color);
+    // console.log("Set color select " + color);
+    // console.log("Set color select " + color);
     model.colorSelect = color;
     publicAPI.updateGeometry();
   };

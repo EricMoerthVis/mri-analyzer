@@ -373,7 +373,7 @@ function createMainUI(
       const planes = croppingWidget.getWidgetState().planes;
       imageRepresentation.setCroppingPlanes(planes);
       const bboxCorners = croppingWidget.planesToBBoxCorners(planes);
-      console.log(bboxCorners);
+      // console.log(bboxCorners);
       if (boundingBoxHandle != null) {
         boundingBoxHandle(bboxCorners);
       }
