@@ -21,6 +21,33 @@ import resetCameraIcon from './icons/reset-camera.svg';
 import tumorIcon from './icons/tumor.svg';
 import controlIcon from './icons/control.svg';
 
+function hexToRGB(h, isPct) {
+  let r = 0,
+    g = 0,
+    b = 0;
+  isPct = isPct === true;
+
+  if (h.length === 4) {
+    r = '0x' + h[1] + h[1];
+    g = '0x' + h[2] + h[2];
+    b = '0x' + h[3] + h[3];
+
+  } else if (h.length === 7) {
+    r = '0x' + h[1] + h[2];
+    g = '0x' + h[3] + h[4];
+    b = '0x' + h[5] + h[6];
+  }
+
+  if (isPct) {
+    r = +(r / 255 * 100).toFixed(1);
+    g = +(g / 255 * 100).toFixed(1);
+    b = +(b / 255 * 100).toFixed(1);
+  }
+
+  return [r / 100, g / 100, b / 100];
+}
+
+
 function createMainUI(
   rootContainer,
   viewerDOMId,
@@ -39,12 +66,19 @@ function createMainUI(
   rootContainer.appendChild(uiContainer);
   uiContainer.setAttribute('class', style.uiContainer);
 
-  if (colors === null) {
+  if (colors === null || colors === undefined) {
     colors = {
       tumor: [0.8157, 0.2392, 0.215686],
       compare: [0, 0.647, 0.098]
     };
+  } else {
+    colors = {
+      tumor: hexToRGB(colors.tumor, true),
+      compare: hexToRGB(colors.compare, true)
+    };
   }
+
+  console.log(colors);
 
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['invertibleButton', 'tooltipButton'],
@@ -467,20 +501,6 @@ function createMainUI(
     view.resetCamera();
   }
 
-
-  /**
-   * https://gist.github.com/renancouto/4675192
-   **/
-  function colorLuminance(color, percent) {
-    var num = parseInt(color,16),
-      amt = Math.round(2.55 * percent),
-      R = (num >> 16) + amt,
-      B = (num >> 8 & 0x00FF) + amt,
-      G = (num & 0x0000FF) + amt;
-
-    return (0x1000000 + (R<255?R<1?0:R:255)*0x10000 + (B<255?B<1?0:B:255)*0x100 + (G<255?G<1?0:G:255)).toString(16).slice(1);
-  }
-
   resetCameraButton.addEventListener('change', (event) => {
     event.preventDefault();
     event.stopPropagation();
@@ -496,6 +516,7 @@ function createMainUI(
   /**
    * Add tumor selector button
    */
+  if (colors !== undefined) console.log('Tumor color:' + hexToRGB(colors.tumor));
   const tumorWidget = vtkTumorSelectWidget.newInstance();
   tumorWidget.setHandleSize(5);
   tumorWidget.setColorBasic(colors.tumor);
@@ -536,6 +557,7 @@ function createMainUI(
   /**
    * Add compare region selector button
    */
+  if (colors !== undefined) console.log('Compare color:' + hexToRGB(colors.compare));
   const compareWidget = vtkTumorSelectWidget.newInstance();
   compareWidget.setHandleSize(5);
   compareWidget.setColorBasic(colors.compare);
@@ -548,6 +570,7 @@ function createMainUI(
   compareWidget.setEnabled(false);
   compareWidget.setVolumeMapper(imageRepresentation.getMapper());
   let controlSelectionEnabled = false;
+
 
   function toggleControlSelection() {
     controlSelectionEnabled = !controlSelectionEnabled;

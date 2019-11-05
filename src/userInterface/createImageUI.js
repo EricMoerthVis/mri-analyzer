@@ -12,6 +12,8 @@ import shadowIcon from './icons/shadow.svg';
 import gradientOpacityIcon from './icons/gradient.svg';
 import viewPlansIcon from './icons/view-planes.svg';
 
+const colorMapPreset = 'Grayscale';
+
 function createViewPlanesToggle(
   imageUIGroup,
   viewerDOMId,
@@ -151,7 +153,8 @@ function createTransferFunctionWidget(
     }
     const colorDataRange = transferFunctionWidget.getOpacityRange();
     const preset = vtkColorMaps.getPresetByName(
-      lookupTableProxy.getPresetName()
+      // lookupTableProxy.getPresetName()
+      colorMapPreset
     );
     lookupTable.applyColorMap(preset);
     lookupTable.setMappingRange(...colorDataRange);
@@ -543,7 +546,8 @@ function createColorPresetSelector(
 
   presetSelector.addEventListener('change', updateColorMap);
   uiContainer.appendChild(presetSelector);
-  presetSelector.value = lookupTableProxy.getPresetName();
+  // presetSelector.value = lookupTableProxy.getPresetName();
+  presetSelector.value = colorMapPreset;
 
   return updateColorMap;
 }
