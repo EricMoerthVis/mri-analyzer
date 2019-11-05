@@ -21,6 +21,12 @@ import resetCameraIcon from './icons/reset-camera.svg';
 import tumorIcon from './icons/tumor.svg';
 import controlIcon from './icons/control.svg';
 
+/**
+ * https://css-tricks.com/converting-color-spaces-in-javascript/
+ * @param h
+ * @param isPct
+ * @returns {number[]}
+ */
 function hexToRGB(h, isPct) {
   let r = 0,
     g = 0,
