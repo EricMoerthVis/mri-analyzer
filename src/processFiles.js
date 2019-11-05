@@ -23,7 +23,7 @@ function typedArrayForBuffer(typedArrayType, buffer) {
   return new typedArrayFunction(buffer)
 }
 
-const processFiles = (container, {files, use2D}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss) => {
+const processFiles = (container, {files, use2D}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) => {
   userInterface.emptyContainer(container);
   userInterface.createLoadingProgress(container);
 
@@ -99,7 +99,7 @@ const processFiles = (container, {files, use2D}, tumorHandle, compareHandle, sli
             image,
             geometries,
             use2D: !is3D,
-          }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss)
+          }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors)
         );
       })
     })

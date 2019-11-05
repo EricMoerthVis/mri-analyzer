@@ -462,7 +462,7 @@ function vtkSelectionWidget(publicAPI, model) {
         [renderPosition.x, renderPosition.y, 0.0],
         callData.pokedRenderer
       );
-      console.log(handles[activeHandleIndex] + ' ' + annotationPicker.getPickPosition());
+      // console.log(handles[activeHandleIndex] + ' ' + annotationPicker.getPickPosition());
 
       const newPosition = annotationPicker.getPickPosition();
       if (model.selectionState.controlState === SelectionState.DEFAULT) {
