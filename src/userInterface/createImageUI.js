@@ -48,11 +48,11 @@ function createViewPlanesToggle(
   const viewPlanesButton = document.createElement('div');
   viewPlanesButton.innerHTML = `<input id="${viewerDOMId}-toggleSlicingPlanesButton" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="View planes [s]" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="View planes [s]" class="${
     contrastSensitiveStyle.tooltipButton
-    } ${style.viewPlanesButton} ${
+  } ${style.viewPlanesButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleSlicingPlanesButton">${viewPlansIcon}</label>`;
+  }" for="${viewerDOMId}-toggleSlicingPlanesButton">${viewPlansIcon}</label>`;
   viewPlanesButton.addEventListener('change', (event) => {
     setViewPlanes();
   });
@@ -74,11 +74,11 @@ function createUseShadowToggle(
   const useShadowButton = document.createElement('div');
   useShadowButton.innerHTML = `<input id="${viewerDOMId}-toggleShadowButton" type="checkbox" class="${
     style.toggleInput
-    }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="Use shadow" class="${
+  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="Use shadow" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.shadowButton} ${
+  } ${style.shadowButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleShadowButton">${shadowIcon}</label>`;
+  }" for="${viewerDOMId}-toggleShadowButton">${shadowIcon}</label>`;
   let useShadow = true;
   useShadowButton.addEventListener('change', (event) => {
     useShadow = !useShadow;
@@ -96,7 +96,8 @@ function createTransferFunctionWidget(
   dataArray,
   view,
   renderWindow,
-  use2D
+  use2D,
+  gauss,
 ) {
   const piecewiseFunction = piecewiseFunctionProxy.getPiecewiseFunction();
 
@@ -176,7 +177,11 @@ function createTransferFunctionWidget(
     // opacity in 2D)
     transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.0, 3.0);
   } else {
-    transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.5, 0.4);
+    if (gauss !== undefined) {
+      transferFunctionWidget.addGaussian(gauss.positionGauss, gauss.heightGauss, gauss.widthGauss, gauss.xBias, gauss.yBias);
+    } else {
+      transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.5, 0.4);
+    }
   }
   transferFunctionWidget.applyOpacity(piecewiseFunction);
   transferFunctionWidget.render();
@@ -308,9 +313,9 @@ function createPlaneIndexSliders(
   xSliderEntry.innerHTML = `
     <label id="${viewerDOMId}-xSliceLabel" class="${
     contrastSensitiveStyle.sliderLabel
-    }">X:</label><input type="range" min="${
+  }">X:</label><input type="range" min="${
     xSlice.min
-    }" max="${xSlice.max}" value="${currentSlicePosition}" step="${xSlice.step}"
+  }" max="${xSlice.max}" value="${currentSlicePosition}" step="${xSlice.step}"
       id="${viewerDOMId}-xSlice" class="${style.slider}" />`;
   const xSliceElement = xSliderEntry.querySelector(`#${viewerDOMId}-xSlice`);
   const xPlaneLabel = xSliderEntry.querySelector(
@@ -353,9 +358,9 @@ function createPlaneIndexSliders(
   ySliderEntry.innerHTML = `
     <label id="${viewerDOMId}-ySliceLabel" class="${
     contrastSensitiveStyle.sliderLabel
-    }">Y:</label><input type="range" min="${
+  }">Y:</label><input type="range" min="${
     ySlice.min
-    }" max="${ySlice.max}" value="${currentSlicePosition}" step="${ySlice.step}"
+  }" max="${ySlice.max}" value="${currentSlicePosition}" step="${ySlice.step}"
       id="${viewerDOMId}-ySlice" class="${style.slider}" />`;
   const ySliceElement = ySliderEntry.querySelector(`#${viewerDOMId}-ySlice`);
   const yPlaneLabel = ySliderEntry.querySelector(
@@ -398,9 +403,9 @@ function createPlaneIndexSliders(
   zSliderEntry.innerHTML = `
     <label id="${viewerDOMId}-zSliceLabel" class="${
     contrastSensitiveStyle.sliderLabel
-    }">Z:</label><input type="range" min="${
+  }">Z:</label><input type="range" min="${
     zSlice.min
-    }" max="${zSlice.max}" value="${currentSlicePosition}" step="${zSlice.step}"
+  }" max="${zSlice.max}" value="${currentSlicePosition}" step="${zSlice.step}"
       id="${viewerDOMId}-zSlice" class="${style.slider}" />`;
   const zSliceElement = zSliderEntry.querySelector(`#${viewerDOMId}-zSlice`);
   const zPlaneLabel = zSliderEntry.querySelector(
@@ -560,7 +565,7 @@ function createSampleDistanceSlider(
   sliderEntry.innerHTML = `
     <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Volume sampling distance" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.sampleDistanceButton}">
+  } ${style.sampleDistanceButton}">
       ${sampleDistanceIcon}
     </div>
     <input type="range" min="0" max="1" value="0.3" step="0.01"
@@ -595,7 +600,7 @@ function createGradientOpacitySlider(
   sliderEntry.innerHTML = `
     <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Gradient opacity" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.gradientOpacitySlider}">
+  } ${style.gradientOpacitySlider}">
       ${gradientOpacityIcon}
     </div>
     <input type="range" min="0" max="1" value="0.2" step="0.01"
@@ -628,7 +633,8 @@ function createImageUI(
   view,
   isBackgroundDark,
   use2D,
-  sliceSelectionHandle
+  sliceSelectionHandle,
+  gauss,
 ) {
   const renderWindow = view.getRenderWindow();
 
@@ -657,7 +663,8 @@ function createImageUI(
     dataArray,
     view,
     renderWindow,
-    use2D
+    use2D,
+    gauss,
   );
 
   let updateGradientOpacity = null;
