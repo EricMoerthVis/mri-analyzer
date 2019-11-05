@@ -1,14 +1,14 @@
-import macro from "vtk.js/Sources/macro";
-import vtkMath from "vtk.js/Sources/Common/Core/Math";
-import vtkPlane from "vtk.js/Sources/Common/DataModel/Plane";
-import vtkPointPicker from "vtk.js/Sources/Rendering/Core/PointPicker";
-import vtkAbstractWidget from "vtk.js/Sources/Interaction/Widgets/AbstractWidget";
-import vtkSelectionRepresentation from "../SelectionRepresentation";
-import Constants from "./Constants";
-import {vec3, mat4} from "gl-matrix";
+import macro from 'vtk.js/Sources/macro';
+import vtkMath from 'vtk.js/Sources/Common/Core/Math';
+import vtkPlane from 'vtk.js/Sources/Common/DataModel/Plane';
+import vtkPointPicker from 'vtk.js/Sources/Rendering/Core/PointPicker';
+import vtkAbstractWidget from 'vtk.js/Sources/Interaction/Widgets/AbstractWidget';
+import vtkSelectionRepresentation from '../SelectionRepresentation';
+import Constants from './Constants';
+import { mat4, vec3 } from 'gl-matrix';
 
-const {vtkErrorMacro, VOID, EVENT_ABORT} = macro;
-const {TOTAL_NUM_HANDLES, WidgetState, CropWidgetEvents} = Constants;
+const { vtkErrorMacro, VOID, EVENT_ABORT } = macro;
+const { TOTAL_NUM_HANDLES, WidgetState, SelectionState, CropWidgetEvents } = Constants;
 
 // ----------------------------------------------------------------------------
 // vtkSelectionWidget methods
@@ -30,7 +30,7 @@ function vtkSelectionWidget(publicAPI, model) {
   model.colorInitial = [1, 1, 1];
   model.colorSelect = [0, 1, 0];
   // Set our className
-  model.classHierarchy.push("vtkSelectionWidget");
+  model.classHierarchy.push('vtkSelectionWidget');
 
   const annotationPicker = vtkPointPicker.newInstance();
   annotationPicker.setPickFromList(1);
@@ -46,8 +46,13 @@ function vtkSelectionWidget(publicAPI, model) {
 
   model.widgetState = {
     activeHandleIndex: -1,
-    planes: Array(6).fill(0),
+    planes: Array(6)
+      .fill(0),
     controlState: WidgetState.IDLE
+  };
+
+  model.selectionState = {
+    controlState: SelectionState.DEFAULT
   };
 
   function indexToWorld(ain) {
@@ -77,11 +82,14 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.getWidgetState = () => Object.assign({}, model.widgetState);
 
+  publicAPI.getSelectionState = () => Object.assign({}, model.selectionState);
+
   publicAPI.updateWidgetState = (state) => {
-    const needsUpdate = Object.keys(state).reduce(
-      (flag, key) => flag || model.widgetState[key] !== state[key],
-      false
-    );
+    const needsUpdate = Object.keys(state)
+      .reduce(
+        (flag, key) => flag || model.widgetState[key] !== state[key],
+        false
+      );
 
     if (needsUpdate) {
       const oldState = model.widgetState;
@@ -124,7 +132,8 @@ function vtkSelectionWidget(publicAPI, model) {
 
     // coords are in world space.
     // a null handle means it is disabled
-    const handles = Array(TOTAL_NUM_HANDLES).fill(null);
+    const handles = Array(TOTAL_NUM_HANDLES)
+      .fill(null);
 
     if (model.cornerHandlesEnabled) {
       // construct corner handles
@@ -159,11 +168,11 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.resetWidgetState = () => {
     if (!model.volumeMapper) {
-      vtkErrorMacro("Volume mapper must be set to update representation");
+      vtkErrorMacro('Volume mapper must be set to update representation');
       return;
     }
     if (!model.volumeMapper.getInputData()) {
-      vtkErrorMacro("Volume mapper has no input data");
+      vtkErrorMacro('Volume mapper has no input data');
       return;
     }
 
@@ -229,7 +238,7 @@ function vtkSelectionWidget(publicAPI, model) {
   publicAPI.getCroppingPlanes = () => model.widgetState.planes.slice();
 
   publicAPI.setCroppingPlanes = (...planes) => {
-    publicAPI.updateWidgetState({planes});
+    publicAPI.updateWidgetState({ planes });
   };
 
   publicAPI.updateRepresentation = () => {
@@ -237,7 +246,7 @@ function vtkSelectionWidget(publicAPI, model) {
       const bounds = model.volumeMapper.getBounds();
       model.widgetRep.placeWidget(...bounds);
 
-      const {activeHandleIndex, planes} = model.widgetState;
+      const { activeHandleIndex, planes } = model.widgetState;
 
       const bboxCorners = publicAPI.getCorners(planes);
       const handlePositions = publicAPI.planesToHandles(planes);
@@ -274,8 +283,10 @@ function vtkSelectionWidget(publicAPI, model) {
   // Given display coordinates and a plane, returns the
   // point on the plane that corresponds to display coordinates.
   publicAPI.displayToPlane = (displayCoords, planePoint, planeNormal) => {
-    const view = publicAPI.getInteractor().getView();
-    const renderer = publicAPI.getInteractor().getCurrentRenderer();
+    const view = publicAPI.getInteractor()
+      .getView();
+    const renderer = publicAPI.getInteractor()
+      .getCurrentRenderer();
     const camera = renderer.getActiveCamera();
 
     const cameraFocalPoint = camera.getFocalPoint();
@@ -354,6 +365,37 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.handleMouseMove = (callData) => publicAPI.moveAction(callData);
 
+  publicAPI.handleKeyDown = (callData) => publicAPI.keyDown(callData);
+
+  publicAPI.handleKeyUp = (callData) => publicAPI.keyUp(callData);
+
+
+  publicAPI.keyDown = (callData) => {
+    // console.log(callData);
+    switch (callData.key) {
+      case 'Shift':
+        model.selectionState.controlState = SelectionState.PLANE;
+        break;
+      case 'Control':
+        model.selectionState.controlState = SelectionState.DEPTH;
+        break;
+      default:
+        break;
+    }
+  };
+
+  publicAPI.keyUp = (callData) => {
+    // console.log(callData);
+    switch (callData.key) {
+      case 'Shift':
+      case 'Control':
+        model.selectionState.controlState = SelectionState.DEFAULT;
+        break;
+      default:
+        break;
+    }
+  };
+
   let mousePos = null;
 
   publicAPI.pressAction = (callData) => {
@@ -361,12 +403,12 @@ function vtkSelectionWidget(publicAPI, model) {
       const handleIndex = model.widgetRep.getEventIntersection(callData);
       if (handleIndex > -1) {
         model.activeHandleIndex = handleIndex;
-        if (callData.type === "LeftButtonPress") {
+        if (callData.type === 'LeftButtonPress') {
           publicAPI.updateWidgetState({
             activeHandleIndex: handleIndex,
             controlState: WidgetState.SELECTING
           });
-        } else if (callData.type === "RightButtonPress") {
+        } else if (callData.type === 'RightButtonPress') {
           mousePos = [callData.position.x, callData.position.y];
           publicAPI.updateWidgetState({
             activeHandleIndex: handleIndex,
@@ -381,7 +423,7 @@ function vtkSelectionWidget(publicAPI, model) {
   ;
 
   publicAPI.moveAction = (callData) => {
-    const {controlState, planes, activeHandleIndex} = model.widgetState;
+    const { controlState, planes, activeHandleIndex } = model.widgetState;
     if (controlState === WidgetState.IDLE || activeHandleIndex === -1) {
       return VOID;
     }
@@ -389,7 +431,8 @@ function vtkSelectionWidget(publicAPI, model) {
     const handles = publicAPI.planesToHandles(planes);
     const mouse = [callData.position.x, callData.position.y];
     const handlePos = handles[activeHandleIndex];
-    const renderer = publicAPI.getInteractor().getCurrentRenderer();
+    const renderer = publicAPI.getInteractor()
+      .getCurrentRenderer();
     const camera = renderer.getActiveCamera();
     const dop = camera.getDirectionOfProjection();
 
@@ -412,12 +455,23 @@ function vtkSelectionWidget(publicAPI, model) {
       }
       publicAPI.setHandleSize(size);
     } else {
+      // Check the Selection state
+      // console.log(model.selectionState.controlState);
       const renderPosition = callData.position;
       annotationPicker.pick(
         [renderPosition.x, renderPosition.y, 0.0],
         callData.pokedRenderer
       );
-      handles[activeHandleIndex] = annotationPicker.getPickPosition();
+      console.log(handles[activeHandleIndex] + ' ' + annotationPicker.getPickPosition());
+
+      const newPosition = annotationPicker.getPickPosition();
+      if (model.selectionState.controlState === SelectionState.DEFAULT) {
+        handles[activeHandleIndex] = newPosition;
+      } else if (model.selectionState.controlState === SelectionState.PLANE) {
+        handles[activeHandleIndex] = [newPosition[0], newPosition[1], handles[activeHandleIndex][2]];
+      } else if (model.selectionState.controlState === SelectionState.DEPTH) {
+        handles[activeHandleIndex] = [handles[activeHandleIndex][0], handles[activeHandleIndex][1], newPosition[2]];
+      }
       publicAPI.updateRepresentation();
       publicAPI.modified();
     }
@@ -460,11 +514,11 @@ export function extend(publicAPI, model, initialValues = {}) {
   );
 
   macro.get(publicAPI, model, [
-    "volumeMapper",
-    "handleSize",
-    "faceHandlesEnabled",
-    "edgeHandlesEnabled",
-    "cornerHandlesEnabled"
+    'volumeMapper',
+    'handleSize',
+    'faceHandlesEnabled',
+    'edgeHandlesEnabled',
+    'cornerHandlesEnabled'
   ]);
 
   // Object methods
@@ -475,9 +529,12 @@ export function extend(publicAPI, model, initialValues = {}) {
 
 export const newInstance = macro.newInstance(
   extend,
-  "vtkSelectionWidget"
+  'vtkSelectionWidget'
 );
 
 // ----------------------------------------------------------------------------
 
-export default {newInstance, extend};
+export default {
+  newInstance,
+  extend
+};
