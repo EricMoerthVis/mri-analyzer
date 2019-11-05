@@ -530,7 +530,7 @@ function createMainUI(
   function toggleControlSelection() {
     controlSelectionEnabled = !controlSelectionEnabled;
     compareWidget.setEnabled(controlSelectionEnabled);
-    if (!tumorSelectionEnabled && tumorHandle !== undefined) {
+    if (!controlSelectionEnabled && compareHandle !== undefined) {
       compareHandle(null);
     }
   }
