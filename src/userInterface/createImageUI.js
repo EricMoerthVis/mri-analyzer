@@ -13,6 +13,7 @@ import gradientOpacityIcon from './icons/gradient.svg';
 import viewPlansIcon from './icons/view-planes.svg';
 
 // const colorMapPreset = 'Grayscale';
+var lastGaussian;
 
 function createViewPlanesToggle(
   imageUIGroup,
@@ -178,12 +179,12 @@ function createTransferFunctionWidget(
     // Necessary side effect: addGaussian calls invokeOpacityChange, which
     // calls onOpacityChange, which updates the lut (does not have a low
     // opacity in 2D)
-    transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.0, 3.0);
+    lastGaussian = transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.0, 3.0);
   } else {
     if (gauss !== undefined) {
-      transferFunctionWidget.addGaussian(gauss.positionGauss, gauss.heightGauss, gauss.widthGauss, gauss.xBias, gauss.yBias);
+      lastGaussian = transferFunctionWidget.addGaussian(gauss.positionGauss, gauss.heightGauss, gauss.widthGauss, gauss.xBias, gauss.yBias);
     } else {
-      transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.5, 0.4);
+      lastGaussian = transferFunctionWidget.addGaussian(0.5, 1.0, 0.5, 0.5, 0.4);
     }
   }
   transferFunctionWidget.applyOpacity(piecewiseFunction);
@@ -542,6 +543,10 @@ function createColorPresetSelector(
   function updateColorMap(event) {
     lookupTableProxy.setPresetName(presetSelector.value);
     renderWindow.render();
+  }
+
+  function setGauss(gaussFct){
+    transferFunctionWidget.removeGaussians()
   }
 
   presetSelector.addEventListener('change', updateColorMap);
