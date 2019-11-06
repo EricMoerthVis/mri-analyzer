@@ -84,7 +84,7 @@ function createMainUI(
     };
   }
 
-  console.log(colors);
+  // console.log(colors);
 
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['invertibleButton', 'tooltipButton'],
@@ -522,7 +522,6 @@ function createMainUI(
   /**
    * Add tumor selector button
    */
-  if (colors !== undefined) console.log('Tumor color:' + hexToRGB(colors.tumor));
   const tumorWidget = vtkTumorSelectWidget.newInstance();
   tumorWidget.setHandleSize(5);
   tumorWidget.setColorBasic(colors.tumor);
@@ -563,7 +562,6 @@ function createMainUI(
   /**
    * Add compare region selector button
    */
-  if (colors !== undefined) console.log('Compare color:' + hexToRGB(colors.compare));
   const compareWidget = vtkTumorSelectWidget.newInstance();
   compareWidget.setHandleSize(5);
   compareWidget.setColorBasic(colors.compare);

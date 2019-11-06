@@ -7,6 +7,7 @@ import processFiles from './processFiles';
 import userInterface from './userInterface';
 import createFileDragAndDrop from './userInterface/createFileDragAndDrop';
 import style from './userInterface/MriAnalyzer.module.css';
+import createViewer from "./createViewer";
 
 let doNotInitViewers = false;
 
@@ -16,8 +17,20 @@ export function createViewerFromLocalFiles(container) {
 }
 
 export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) {
-  return processFiles(container, {files: file, use2D}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors);
+  return processFiles(container, {
+    files: file,
+    use2D,
+  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors);
 }
+
+export function createViewerFromImage(container, image, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) {
+  return createViewer(container, {
+    image,
+    geometries: [],
+    use2D: false,
+  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors);
+}
+
 
 export function createViewerFromUrl(el, url, use2D = false, tumorHandle) {
   userInterface.emptyContainer(el);
