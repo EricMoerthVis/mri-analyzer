@@ -137,7 +137,7 @@ const createViewer = (
       .toString()
       .replace('.', '');
 
-  const {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler} = userInterface.createMainUI(
+  const {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler, compareWidget, tumorWidget} = userInterface.createMainUI(
     rootContainer,
     viewerDOMId,
     isBackgroundDark,
@@ -147,9 +147,8 @@ const createViewer = (
     view,
     tumorHandle,
     compareHandle,
-    sliceSelectionHandle,
     boundingBoxHandle,
-    colors
+    colors,
   );
 
   if (image) {
@@ -163,7 +162,13 @@ const createViewer = (
       view,
       isBackgroundDark,
       use2D,
-      sliceSelectionHandle,
+      (name, value) => {
+        compareWidget.setSliceInformation(name, value);
+        tumorWidget.setSliceInformation(name, value);
+        if (sliceSelectionHandle != null) {
+          sliceSelectionHandle(name, value);
+        }
+      },
       gauss,
       colors
     );
@@ -632,12 +637,10 @@ const createViewer = (
 
     publicAPI.setGradientOpacity = (opacity) => {
       const current_opacity = parseFloat(gradientOpacitySlider.value);
-      if (current_opacity !== parseFloat(opacity)) {
-        gradientOpacitySlider.value = opacity;
-        imageUI.updateGradientOpacity();
-      }
-    };
-  }
+      gradientOpacitySlider.value = opacity;
+      imageUI.updateGradientOpacity();
+    }
+  };
 
 
   publicAPI.getViewProxy = () => {

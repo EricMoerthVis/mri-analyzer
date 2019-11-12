@@ -5,10 +5,10 @@ import vtkPointPicker from 'vtk.js/Sources/Rendering/Core/PointPicker';
 import vtkAbstractWidget from 'vtk.js/Sources/Interaction/Widgets/AbstractWidget';
 import vtkSelectionRepresentation from '../SelectionRepresentation';
 import Constants from './Constants';
-import { mat4, vec3 } from 'gl-matrix';
+import {mat4, vec3} from 'gl-matrix';
 
-const { vtkErrorMacro, VOID, EVENT_ABORT } = macro;
-const { TOTAL_NUM_HANDLES, WidgetState, SelectionState, CropWidgetEvents } = Constants;
+const {vtkErrorMacro, VOID, EVENT_ABORT} = macro;
+const {TOTAL_NUM_HANDLES, WidgetState, SelectionState, CropWidgetEvents} = Constants;
 
 // ----------------------------------------------------------------------------
 // vtkSelectionWidget methods
@@ -27,6 +27,7 @@ function arrayEquals(a, b) {
 
 
 function vtkSelectionWidget(publicAPI, model) {
+  model.sliceValue = null;
   model.colorInitial = [1, 1, 1];
   model.colorSelect = [0, 1, 0];
   // Set our className
@@ -238,7 +239,7 @@ function vtkSelectionWidget(publicAPI, model) {
   publicAPI.getCroppingPlanes = () => model.widgetState.planes.slice();
 
   publicAPI.setCroppingPlanes = (...planes) => {
-    publicAPI.updateWidgetState({ planes });
+    publicAPI.updateWidgetState({planes});
   };
 
   publicAPI.updateRepresentation = () => {
@@ -246,7 +247,7 @@ function vtkSelectionWidget(publicAPI, model) {
       const bounds = model.volumeMapper.getBounds();
       model.widgetRep.placeWidget(...bounds);
 
-      const { activeHandleIndex, planes } = model.widgetState;
+      const {activeHandleIndex, planes} = model.widgetState;
 
       const bboxCorners = publicAPI.getCorners(planes);
       const handlePositions = publicAPI.planesToHandles(planes);
@@ -369,8 +370,19 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.handleKeyUp = (callData) => publicAPI.keyUp(callData);
 
+  publicAPI.snapToSliceKey = (key) =>{
+    model.snapToSliceKey = key;
+  }
+
+  publicAPI.setSliceInformation = (name, value) => {
+    if (name === 'z') {
+      model.sliceValue = value;
+    }
+  };
 
   publicAPI.keyDown = (callData) => {
+    const {controlState, planes, activeHandleIndex} = model.widgetState;
+    const handles = publicAPI.planesToHandles(planes);
     // console.log(callData);
     switch (callData.key) {
       case 'Shift':
@@ -378,6 +390,22 @@ function vtkSelectionWidget(publicAPI, model) {
         break;
       case 'Control':
         model.selectionState.controlState = SelectionState.DEPTH;
+        break;
+      case 'c':
+      case 'C':
+        if(model.snapToSliceKey === 'C'){
+          handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
+          publicAPI.updateRepresentation();
+          publicAPI.modified();
+        }
+        break;
+      case 't':
+      case 'T':
+        if(model.snapToSliceKey === 'T'){
+          handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
+          publicAPI.updateRepresentation();
+          publicAPI.modified();
+        }
         break;
       default:
         break;
@@ -423,7 +451,7 @@ function vtkSelectionWidget(publicAPI, model) {
   ;
 
   publicAPI.moveAction = (callData) => {
-    const { controlState, planes, activeHandleIndex } = model.widgetState;
+    const {controlState, planes, activeHandleIndex} = model.widgetState;
     if (controlState === WidgetState.IDLE || activeHandleIndex === -1) {
       return VOID;
     }

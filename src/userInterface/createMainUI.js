@@ -64,9 +64,8 @@ function createMainUI(
   view,
   tumorHandle,
   compareHandle,
-  sliceSelectionHandle,
   boundingBoxHandle,
-  colors
+  colors,
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);
@@ -254,9 +253,6 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
-      if (sliceSelectionHandle != null) {
-        // sliceSelectionHandle('x', document.getElementById(`${viewerDOMId}-xSlice`).value);
-      }
     }
   }
 
@@ -279,9 +275,6 @@ function createMainUI(
       yPlaneRow.style.display = 'flex';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'none';
-      if (sliceSelectionHandle != null) {
-        // sliceSelectionHandle('y', document.getElementById(`${viewerDOMId}-ySlice`).value);
-      }
     }
   }
 
@@ -304,9 +297,6 @@ function createMainUI(
       yPlaneRow.style.display = 'none';
       const zPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-z-plane-row`);
       zPlaneRow.style.display = 'flex';
-      if (sliceSelectionHandle != null) {
-        // sliceSelectionHandle('z', document.getElementById(`${viewerDOMId}-zSlice`).value);
-      }
     }
   }
 
@@ -524,6 +514,7 @@ function createMainUI(
    */
   const tumorWidget = vtkTumorSelectWidget.newInstance();
   tumorWidget.setHandleSize(5);
+  tumorWidget.snapToSliceKey('T');
   tumorWidget.setColorBasic(colors.tumor);
   tumorWidget.setColorSelect(colors.tumor);
   tumorWidget.setSelectionHandle(tumorHandle);
@@ -564,6 +555,7 @@ function createMainUI(
    */
   const compareWidget = vtkTumorSelectWidget.newInstance();
   compareWidget.setHandleSize(5);
+  compareWidget.snapToSliceKey('C');
   compareWidget.setColorBasic(colors.compare);
   compareWidget.setColorSelect(colors.compare);
   compareWidget.setFaceHandlesEnabled(false);
@@ -604,7 +596,9 @@ function createMainUI(
     uiContainer,
     croppingWidget,
     addCroppingPlanesChangedHandler,
-    addResetCropHandler
+    addResetCropHandler,
+    compareWidget,
+    tumorWidget,
   };
 }
 
