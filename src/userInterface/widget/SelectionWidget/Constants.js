@@ -4,6 +4,7 @@ const WidgetState = {
   SIZING: 2,
   SELECTION_DEPTH: 3,
   SELECTION_PLANE: 4,
+  MIRROR: 5,
 };
 
 const SelectionState = {

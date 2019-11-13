@@ -28,6 +28,7 @@ function arrayEquals(a, b) {
 
 function vtkSelectionWidget(publicAPI, model) {
   model.sliceValue = null;
+  model.xAxisMiddelValue = null;
   model.colorInitial = [1, 1, 1];
   model.colorSelect = [0, 1, 0];
   // Set our className
@@ -114,7 +115,10 @@ function vtkSelectionWidget(publicAPI, model) {
   publicAPI.setVolumeMapper = (volumeMapper) => {
     if (volumeMapper !== model.volumeMapper) {
       model.volumeMapper = volumeMapper;
-
+      if (model.sliceValue === null) {
+        model.sliceValue = Math.round(model.volumeMapper.getBounds()[5] / 2);
+      }
+      model.xAxisMiddelValue = Math.round(model.volumeMapper.getBounds()[0] / 2);
       publicAPI.resetWidgetState();
       if (model.enabled) {
         publicAPI.updateRepresentation();
@@ -256,7 +260,7 @@ function vtkSelectionWidget(publicAPI, model) {
         if (!handle) {
           return model.handleSize;
         }
-        return publicAPI.adjustHandleSize(handle, model.handleSize);
+        return publicAPI.adjustHandleSize(model.handleSize);
       });
 
       if (model.selectionHandle != null) {
@@ -274,7 +278,7 @@ function vtkSelectionWidget(publicAPI, model) {
     }
   };
 
-  publicAPI.adjustHandleSize = (pos, size) => {
+  publicAPI.adjustHandleSize = (size) => {
     if (size != null) {
       return size;
     }
@@ -370,9 +374,24 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.handleKeyUp = (callData) => publicAPI.keyUp(callData);
 
-  publicAPI.snapToSliceKey = (key) =>{
-    model.snapToSliceKey = key;
-  }
+  publicAPI.snapToSliceKey = (key) => {
+    model.snapToSliceKeyValue = key;
+  };
+
+  publicAPI.primarySelectorValue = (value) => {
+    model.primarySelector = value;
+  };
+
+  publicAPI.selectorPlaceToMirror = (value) => {
+    if (!model.primarySelector && model.xAxisMiddelValue !== null &&
+      model.selectionState.controlState === SelectionState.MIRROR) {
+      const handles = publicAPI.planesToHandles(model.widgetState.planes);
+      publicAPI.setHandleSize(value[3]);
+      handles[0] = [model.xAxisMiddelValue - (value[0] - model.xAxisMiddelValue), value[1], value[2]];
+      publicAPI.updateRepresentation();
+      publicAPI.modified();
+    }
+  };
 
   publicAPI.setSliceInformation = (name, value) => {
     if (name === 'z') {
@@ -381,9 +400,8 @@ function vtkSelectionWidget(publicAPI, model) {
   };
 
   publicAPI.keyDown = (callData) => {
-    const {controlState, planes, activeHandleIndex} = model.widgetState;
+    const planes = model.widgetState.planes;
     const handles = publicAPI.planesToHandles(planes);
-    // console.log(callData);
     switch (callData.key) {
       case 'Shift':
         model.selectionState.controlState = SelectionState.PLANE;
@@ -391,9 +409,20 @@ function vtkSelectionWidget(publicAPI, model) {
       case 'Control':
         model.selectionState.controlState = SelectionState.DEPTH;
         break;
+      case 'b':
+      case 'B':
+        // mirror another picker mode
+        if (!model.primarySelector) {
+          if (model.selectionState.controlState === SelectionState.MIRROR) {
+            model.selectionState.controlState = SelectionState.DEFAULT;
+          } else {
+            model.selectionState.controlState = SelectionState.MIRROR;
+          }
+        }
+        break;
       case 'c':
       case 'C':
-        if(model.snapToSliceKey === 'C'){
+        if (model.snapToSliceKeyValue === 'C') {
           handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
           publicAPI.updateRepresentation();
           publicAPI.modified();
@@ -401,7 +430,7 @@ function vtkSelectionWidget(publicAPI, model) {
         break;
       case 't':
       case 'T':
-        if(model.snapToSliceKey === 'T'){
+        if (model.snapToSliceKeyValue === 'T') {
           handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
           publicAPI.updateRepresentation();
           publicAPI.modified();
@@ -473,8 +502,6 @@ function vtkSelectionWidget(publicAPI, model) {
     // console.log("User Selected a point so move it");
 
     if (controlState === WidgetState.SIZING) {
-      //console.log("Sizing of the selector");
-      //console.log("Initial Mouse position " + mousePos + " Moving Mouse position " + mouse);
       let distance = Math.sqrt(Math.pow((mousePos[0] - mouse[0]), 2) + Math.pow((mousePos[1] - mouse[1]), 2));
       let direction = mousePos[0] < mouse[0] || mousePos[1] < mouse[1] ? -1 : 1;
       let size = model.handleSize + direction * distance / 100;

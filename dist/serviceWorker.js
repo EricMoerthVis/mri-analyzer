@@ -12,7 +12,7 @@ workboxSW.precache([
   },
   {
     "url": "mriAnalyzer.js",
-    "revision": "dce5d4349cff8a278b63e99ebdc6e0fc"
+    "revision": "ffef9ac74ac458052f8c746151499e15"
   }
 ])
 
