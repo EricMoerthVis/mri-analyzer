@@ -390,6 +390,8 @@ function vtkSelectionWidget(publicAPI, model) {
       handles[0] = [model.xAxisMiddelValue - (value[0] - model.xAxisMiddelValue), value[1], value[2]];
       publicAPI.updateRepresentation();
       publicAPI.modified();
+    } else {
+      model.valueSave = value;
     }
   };
 
@@ -417,6 +419,9 @@ function vtkSelectionWidget(publicAPI, model) {
             model.selectionState.controlState = SelectionState.DEFAULT;
           } else {
             model.selectionState.controlState = SelectionState.MIRROR;
+            if (model.valueSave !== null) {
+              publicAPI.selectorPlaceToMirror(model.valueSave);
+            }
           }
         }
         break;
