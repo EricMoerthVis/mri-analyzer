@@ -191,7 +191,7 @@ const createViewer = (
   };
 
   let updatingImage = false;
-  const setImage = (image) => {
+  const setImage = (image, cropReset = false) => {
     if (updatingImage) {
       return;
     }
@@ -204,8 +204,8 @@ const createViewer = (
     imageUI.transferFunctionWidget.modified();
     croppingWidget.setVolumeMapper(imageRepresentation.getMapper());
     const cropFilter = imageRepresentation.getCropFilter();
-    cropFilter.reset();
-    croppingWidget.resetWidgetState();
+    // cropFilter.reset();
+    // croppingWidget.resetWidgetState();
     setTimeout(() => {
       imageUI.transferFunctionWidget.render();
       view.getRenderWindow()
