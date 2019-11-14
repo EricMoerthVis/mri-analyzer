@@ -144,12 +144,10 @@ const createViewer = (
     imageSource,
     imageRepresentation,
     view,
-    tumorHandle,
-    compareHandle,
     sliceSelectionHandle,
     boundingBoxHandle,
-    colors
   );
+
 
   if (image) {
     imageUI = userInterface.createImageUI(
@@ -164,11 +162,21 @@ const createViewer = (
       use2D,
       sliceSelectionHandle,
       gauss,
-      colors
     );
     const annotationContainer = container.querySelector('.js-se');
     annotationContainer.style.fontFamily = 'monospace';
   }
+
+  userInterface.createSelectionWidgetUI(
+    uiContainer,
+    viewerDOMId,
+    isBackgroundDark,
+    imageRepresentation,
+    view,
+    tumorHandle,
+    compareHandle,
+    colors,
+  );
 
   view.resize();
   const resizeSensor = new ResizeSensor(container, function () {
