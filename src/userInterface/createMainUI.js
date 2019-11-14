@@ -1,6 +1,5 @@
 import macro from 'vtk.js/Sources/macro';
 import vtkImageCroppingRegionsWidget from 'vtk.js/Sources/Interaction/Widgets/ImageCroppingRegionsWidget';
-import vtkTumorSelectWidget from './widget/SelectionWidget';
 
 import getContrastSensitiveStyle from './getContrastSensitiveStyle';
 
@@ -18,41 +17,6 @@ import interpolationIcon from './icons/interpolation.svg';
 import cropIcon from './icons/crop.svg';
 import resetCropIcon from './icons/reset-crop.svg';
 import resetCameraIcon from './icons/reset-camera.svg';
-import tumorIcon from './icons/tumor.svg';
-import controlIcon from './icons/control.svg';
-
-/**
- * https://css-tricks.com/converting-color-spaces-in-javascript/
- * @param h
- * @param isPct
- * @returns {number[]}
- */
-function hexToRGB(h, isPct) {
-  let r = 0,
-    g = 0,
-    b = 0;
-  isPct = isPct === true;
-
-  if (h.length === 4) {
-    r = '0x' + h[1] + h[1];
-    g = '0x' + h[2] + h[2];
-    b = '0x' + h[3] + h[3];
-
-  } else if (h.length === 7) {
-    r = '0x' + h[1] + h[2];
-    g = '0x' + h[3] + h[4];
-    b = '0x' + h[5] + h[6];
-  }
-
-  if (isPct) {
-    r = +(r / 255 * 100).toFixed(1);
-    g = +(g / 255 * 100).toFixed(1);
-    b = +(b / 255 * 100).toFixed(1);
-  }
-
-  return [r / 100, g / 100, b / 100];
-}
-
 
 function createMainUI(
   rootContainer,
@@ -62,32 +26,16 @@ function createMainUI(
   imageSource,
   imageRepresentation,
   view,
-  tumorHandle,
-  compareHandle,
   boundingBoxHandle,
-  colors,
+  colors
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);
   uiContainer.setAttribute('class', style.uiContainer);
 
-  if (colors === null || colors === undefined) {
-    colors = {
-      tumor: [0.8157, 0.2392, 0.215686],
-      compare: [0, 0.647, 0.098]
-    };
-  } else {
-    colors = {
-      tumor: hexToRGB(colors.tumor, true),
-      compare: hexToRGB(colors.compare, true)
-    };
-  }
-
-  // console.log(colors);
-
   const contrastSensitiveStyle = getContrastSensitiveStyle(
     ['invertibleButton', 'tooltipButton'],
-    isBackgroundDark
+    isBackgroundDark,
   );
 
   const mainUIGroup = document.createElement('div');
@@ -144,7 +92,7 @@ function createMainUI(
     ['requestFullscreen', 'exitFullscreen', 'fullscreenchange', 'fullscreen'],
     ['mozRequestFullScreen', 'mozCancelFullScreen', 'mozfullscreenchange', 'mozFullScreen'],
     ['msRequestFullscreen', 'msExitFullscreen', 'MSFullscreenChange', 'msFullscreenEnabled'],
-    ['webkitRequestFullscreen', 'webkitExitFullscreen', 'webkitfullscreenchange', 'webkitIsFullScreen']
+    ['webkitRequestFullscreen', 'webkitExitFullscreen', 'webkitfullscreenchange', 'webkitIsFullScreen'],
   ].forEach((methods) => {
     if (body[methods[0]] && !fullScreenMethods) {
       fullScreenMethods = methods;
@@ -165,6 +113,7 @@ function createMainUI(
     const oldWidth = container.style.width;
     const oldHeight = container.style.height;
 
+    // eslint-disable-next-line no-inner-declarations
     function toggleFullscreen() {
       const fullscreenEnabled = fullscreenButtonInput.checked;
       if (fullscreenEnabled) {
@@ -215,6 +164,7 @@ function createMainUI(
   if (imageRepresentation) {
     let interpolationEnabled = true;
 
+    // eslint-disable-next-line no-inner-declarations
     function toggleInterpolation() {
       interpolationEnabled = !interpolationEnabled;
       view.setPlanesUseLinearInterpolation(interpolationEnabled);
@@ -240,11 +190,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -262,11 +212,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = true;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -284,11 +234,11 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = true;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = false;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'none';
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
@@ -306,15 +256,15 @@ function createMainUI(
     document.getElementById(`${viewerDOMId}-yPlaneButton`).checked = false;
     document.getElementById(`${viewerDOMId}-zPlaneButton`).checked = false;
     document.getElementById(
-      `${viewerDOMId}-volumeRenderingButton`
+      `${viewerDOMId}-volumeRenderingButton`,
     ).checked = true;
     if (imageRepresentation) {
       const volumeRenderingRow = uiContainer.querySelector(
-        `.${viewerDOMId}-volumeRendering`
+        `.${viewerDOMId}-volumeRendering`,
       );
       volumeRenderingRow.style.display = 'flex';
       const viewPlanes = document.getElementById(
-        `${viewerDOMId}-toggleSlicingPlanesButton`
+        `${viewerDOMId}-toggleSlicingPlanesButton`,
       ).checked;
       const xPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-x-plane-row`);
       const yPlaneRow = uiContainer.querySelector(`.${viewerDOMId}-y-plane-row`);
@@ -408,6 +358,7 @@ function createMainUI(
         return;
       }
       croppingUpdateInProgress = true;
+      // eslint-disable-next-line prefer-destructuring
       const planes = croppingWidget.getWidgetState().planes;
       imageRepresentation.setCroppingPlanes(planes);
       const bboxCorners = croppingWidget.planesToBBoxCorners(planes);
@@ -424,6 +375,7 @@ function createMainUI(
     croppingWidget.onCroppingPlanesChanged(debouncedSetCroppingPlanes);
     let cropEnabled = false;
 
+    // eslint-disable-next-line no-inner-declarations
     function toggleCrop() {
       cropEnabled = !cropEnabled;
       croppingWidget.setEnabled(cropEnabled);
@@ -462,6 +414,7 @@ function createMainUI(
       return Object.freeze({unsubscribe});
     };
 
+    // eslint-disable-next-line no-inner-declarations
     function resetCrop() {
       imageRepresentation.getCropFilter()
         .reset();
@@ -510,93 +463,6 @@ function createMainUI(
   mainUIRow.appendChild(resetCameraButton);
 
 
-  /**
-   * Add compare region selector button
-   */
-  const compareWidget = vtkTumorSelectWidget.newInstance();
-  compareWidget.setHandleSize(5);
-  compareWidget.snapToSliceKey('C');
-  compareWidget.primarySelectorValue(false);
-  compareWidget.setColorBasic(colors.compare);
-  compareWidget.setColorSelect(colors.compare);
-  compareWidget.setFaceHandlesEnabled(false);
-  compareWidget.setSelectionHandle(compareHandle);
-  compareWidget.setEdgeHandlesEnabled(false);
-  compareWidget.setCornerHandlesEnabled(true);
-  compareWidget.setInteractor(view.getInteractor());
-  compareWidget.setEnabled(false);
-  compareWidget.setVolumeMapper(imageRepresentation.getMapper());
-  let controlSelectionEnabled = false;
-
-  function toggleControlSelection() {
-    controlSelectionEnabled = !controlSelectionEnabled;
-    compareWidget.setEnabled(controlSelectionEnabled);
-    if (!controlSelectionEnabled && compareHandle !== undefined) {
-      compareHandle(null);
-    }
-  }
-
-  /**
-   * Add tumor selector button
-   */
-  const tumorWidget = vtkTumorSelectWidget.newInstance();
-  tumorWidget.setHandleSize(5);
-  tumorWidget.snapToSliceKey('T');
-  tumorWidget.primarySelectorValue(true);
-  tumorWidget.setColorBasic(colors.tumor);
-  tumorWidget.setColorSelect(colors.tumor);
-  tumorWidget.setSelectionHandle((value) => {
-    compareWidget.selectorPlaceToMirror(value);
-    if (tumorHandle != null) {
-      tumorHandle(value);
-    }
-  });
-  tumorWidget.setFaceHandlesEnabled(false);
-  tumorWidget.setEdgeHandlesEnabled(false);
-  tumorWidget.setCornerHandlesEnabled(true);
-  tumorWidget.setInteractor(view.getInteractor());
-  tumorWidget.setEnabled(false);
-  tumorWidget.setVolumeMapper(imageRepresentation.getMapper());
-
-  // const widgetSphereRep = vtkSphereHandleRepresentation.newInstance();
-
-  let tumorSelectionEnabled = false;
-
-  function toggleTumorSelection() {
-    tumorSelectionEnabled = !tumorSelectionEnabled;
-    tumorWidget.setEnabled(tumorSelectionEnabled);
-    if (!tumorSelectionEnabled && tumorHandle !== undefined) {
-      tumorHandle(null);
-    }
-  }
-
-  const tumorButton = document.createElement('div');
-  tumorButton.innerHTML = `<input id="${viewerDOMId}-toggleTumorSelector" type="checkbox" class="${
-    style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Tumor" class="${
-    contrastSensitiveStyle.invertibleButton
-  } ${style.tumorButton} ${
-    style.toggleButton
-  }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
-  tumorButton.addEventListener('change', (event) => {
-    toggleTumorSelection();
-  });
-  mainUIRow.appendChild(tumorButton);
-
-
-  const compareButton = document.createElement('div');
-  compareButton.innerHTML = `<input id="${viewerDOMId}-toggleControlSelector" type="checkbox" class="${
-    style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Control area" class="${
-    contrastSensitiveStyle.invertibleButton
-  } ${style.compareButton} ${
-    style.toggleButton
-  }" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
-  compareButton.addEventListener('change', (event) => {
-    toggleControlSelection();
-  });
-  mainUIRow.appendChild(compareButton);
-
   uiContainer.appendChild(mainUIGroup);
 
 
@@ -605,8 +471,6 @@ function createMainUI(
     croppingWidget,
     addCroppingPlanesChangedHandler,
     addResetCropHandler,
-    compareWidget,
-    tumorWidget,
   };
 }
 
