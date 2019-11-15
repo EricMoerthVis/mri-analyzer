@@ -145,7 +145,6 @@ const createViewer = (
     imageSource,
     imageRepresentation,
     view,
-    sliceSelectionHandle,
     boundingBoxHandle,
   );
 
