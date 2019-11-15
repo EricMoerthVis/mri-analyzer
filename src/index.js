@@ -16,19 +16,19 @@ export function createViewerFromLocalFiles(container) {
   createFileDragAndDrop(container, processFiles);
 }
 
-export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) {
+export function createViewerFromGivenFiles(container, file, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors, simiCallback) {
   return processFiles(container, {
     files: file,
     use2D,
-  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors);
+  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors, simiCallback);
 }
 
-export function createViewerFromImage(container, image, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) {
+export function createViewerFromImage(container, image, use2D = false, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors, simiCallback) {
   return createViewer(container, {
     image,
     geometries: [],
     use2D: false,
-  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors);
+  }, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors, simiCallback);
 }
 
 

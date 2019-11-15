@@ -31,7 +31,7 @@ function applyStyle(el, style) {
 
 const createViewer = (
   rootContainer,
-  {image, geometries, use2D = false, viewerStyle, viewerState}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors) => {
+  {image, geometries, use2D = false, viewerStyle, viewerState}, tumorHandle, compareHandle, sliceSelectionHandle, boundingBoxHandle, gauss, colors, simiCallback) => {
   userInterface.emptyContainer(rootContainer);
 
   const proxyManager = vtkProxyManager.newInstance({proxyConfiguration});
@@ -200,7 +200,7 @@ const createViewer = (
   };
 
   let updatingImage = false;
-  const setImage = (image, cropReset = false) => {
+  publicAPI.setImage = (image, cropReset = false) => {
     if (updatingImage) {
       return;
     }
@@ -222,7 +222,7 @@ const createViewer = (
       updatingImage = false;
     }, 0);
   };
-  publicAPI.setImage = macro.throttle(setImage, 100);
+  // publicAPI.setImage = macro.throttle(setImage, 100);
 
   const toggleUserInterfaceButton = document.getElementById(`${viewerDOMId}-toggleUserInterfaceButton`);
 
@@ -649,7 +649,8 @@ const createViewer = (
       gradientOpacitySlider.value = opacity;
       imageUI.updateGradientOpacity();
     }
-  };
+  }
+  ;
 
 
   publicAPI.getViewProxy = () => {
@@ -663,7 +664,7 @@ const createViewer = (
   //publicAPI.loadState = (state) => {
   //// todo
   //}
-  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId, tumorWidget, compareWidget);
+  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId, tumorWidget, compareWidget, simiCallback);
 
   return publicAPI;
 };

@@ -276,12 +276,16 @@ function createSelectionWidgetUI(
     style.toggleButton
   }" for="${viewerDOMId}-toggleTransferFunctionButton">${toggleIcon}</label>`;
   toggleButton.addEventListener('change', (event) => {
-    if (!document.getElementById(viewerDOMId + '-toggleTransferFunctionButton').checked) {
-      document.getElementById(viewerDOMId + '-toggleTransferFunction').style.display = 'none';
-      document.getElementById(viewerDOMId + '-toggleColorMap').style.display = 'none';
-    } else {
-      document.getElementById(viewerDOMId + '-toggleTransferFunction').style.display = 'flex';
-      document.getElementById(viewerDOMId + '-toggleColorMap').style.display = 'flex';
+    const tfF = document.getElementById(viewerDOMId + '-toggleTransferFunction');
+    const cm = document.getElementById(viewerDOMId + '-toggleColorMap');
+    if (tfF !== null && cm !== null) {
+      if (!document.getElementById(viewerDOMId + '-toggleTransferFunctionButton').checked) {
+        tfF.style.display = 'none';
+        cm.style.display = 'none';
+      } else {
+        tfF.style.display = 'flex';
+        cm.style.display = 'flex';
+      }
     }
   });
   mainUIRow.appendChild(toggleButton);
