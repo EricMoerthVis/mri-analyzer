@@ -572,7 +572,7 @@ function createSampleDistanceSlider(
   const sliderEntry = document.createElement('div');
   sliderEntry.setAttribute('class', style.sliderEntry);
   sliderEntry.innerHTML = `
-    <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Volume sampling distance" class="${
+    <div itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Volume sampling distance" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.sampleDistanceButton}">
       ${sampleDistanceIcon}

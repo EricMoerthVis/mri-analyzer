@@ -31,7 +31,7 @@
   padding: 2px;
   border: 0px;
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .uiSelectionWidgetContainer {
@@ -45,7 +45,7 @@
   padding: 2px;
   border: 0px;
   box-sizing: border-box;
-  z-index: 1000;
+  z-index: 100;
 }
 
 
@@ -53,7 +53,7 @@
   background: rgba(128, 128, 128, 0.5);
   border-radius: 4px;
   margin: 2px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .uiRow {
@@ -63,11 +63,13 @@
   align-items: center;
   justify-content: space-between;
   padding: 2px;
+  z-index: 100;
 }
 
 .mainUIRow {
   composes: uiRow;
   justify-content: flex-start;
+  z-index: 100;
 }
 
 .progress {
@@ -84,7 +86,7 @@
   flex: 1;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 3px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .logo {
@@ -99,7 +101,7 @@
 
 [itk-vtk-tooltip] {
   position: relative;
-  z-index: 101;
+  z-index: 3;
 }
 
 [itk-vtk-tooltip]::before {
@@ -108,7 +110,7 @@
   position: absolute;
   top: 50%;
   right: calc(100% + 16px);
-  width: 400%;
+  width: 500%;
   padding: 4px 6px;
   text-align: center;
   text-transform: none;
@@ -123,12 +125,12 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-delay: 0.8s;
-  z-index: 101;
+  z-index: 3;
 }
 
 [itk-vtk-tooltip]:hover::before {
   opacity: 1;
-  z-index: 101;
+  z-index: 3;
   transform: translate(0, -50%);
 }
 
@@ -136,7 +138,7 @@
   top: calc(100% + 16px);
   left: 50%;
   right: initial;
-  z-index: 101;
+  z-index: 3;
   transform: translate(-50%, -15px);
 }
 
@@ -149,17 +151,19 @@
   z-index: 3;
   left: calc(100% + 16px);
   right: initial;
+
+  z-index: 3;
   transform: translate(-15px, -50%);
 }
 
 [itk-vtk-tooltip-right]:hover::before {
   transform: translate(0, -50%);
-  z-index: 101;
+  z-index: 3;
 }
 
 [itk-vtk-tooltip-top-screenshot]::before {
   top: initial;
-  z-index: 101;
+  z-index: 3;
   left: 260%;
   right: initial;
   bottom: calc(100% + 8px);
@@ -168,11 +172,44 @@
 
 [itk-vtk-tooltip-top-screenshot]:hover::before {
   transform: translate(-50%, 0);
+  z-index: 3;
 }
+
+[itk-vtk-tooltip-top-tumor]::before {
+  top: initial;
+  z-index: 3;
+  left: 260%;
+  right: initial;
+  bottom: calc(100% + 50px);
+  transform: translate(-35%, 8px);
+}
+
+[itk-vtk-tooltip-top-tumor]:hover::before {
+  bottom: calc(100% + 50px);
+  transform: translate(-35%, 8px);
+  z-index: 3;
+}
+
+[itk-vtk-tooltip-top-selectionWidget]::before {
+  top: initial;
+  left: 60%;
+  right: initial;
+  z-index: 3;
+  bottom: calc(100% + 50px);
+  transform: translate(-50%, 8px);
+}
+
+[itk-vtk-tooltip-top-selectionWidget]:hover::before {
+  bottom: calc(100% + 50px);
+  transform: translate(-50%, 8px);
+  z-index: 3;
+}
+
+
 
 [itk-vtk-tooltip-top-annotation]::before {
   top: initial;
-  z-index: 101;
+  z-index: 3;
   left: 160%;
   right: initial;
   bottom: calc(100% + 10px);
@@ -181,11 +218,13 @@
 
 [itk-vtk-tooltip-top-annotation]:hover::before {
   transform: translate(-50%, 0);
+  z-index: 3;
 }
 
 [itk-vtk-tooltip-top-fullscreen]::before {
   top: initial;
   left: 120%;
+  z-index: 3;
   right: initial;
   bottom: calc(100% + 10px);
   transform: translate(-50%, 15px);
@@ -194,18 +233,21 @@
 
 [itk-vtk-tooltip-top-fullscreen]:hover::before {
   transform: translate(-50%, 0);
+  z-index: 3;
 }
 
 [itk-vtk-tooltip-top]::before {
   top: initial;
   left: 60%;
   right: initial;
+  z-index: 3;
   bottom: calc(100% + 10px);
   transform: translate(-50%, 15px);
 }
 
 [itk-vtk-tooltip-top]:hover::before {
   transform: translate(-50%, 0);
+  z-index: 3;
 }
 
 [itk-vtk-tooltip-top-fullscreen]::before {
@@ -213,22 +255,27 @@
   left: 120%;
   right: initial;
   bottom: calc(100% + 10px);
+  z-index: 3;
   transform: translate(-50%, 15px);
   width: 400%;
 }
 
 .tooltipButtonBrightBG::before {
+  z-index: 3;
 }
 
 .tooltipButtonDarkBG::before {
+  z-index: 3;
   filter: invert(100%);
   -webkit-filter: invert(100%);
 }
 
 .invertibleButtonBrightBG {
+  z-index: 3;
 }
 
 .invertibleButtonDarkBG {
+  z-index: 3;
   filter: invert(100%);
   -webkit-filter: invert(100%);
 }
@@ -237,7 +284,7 @@
   height: 1.5em;
   width: 1.5em;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .screenshotButton {
@@ -248,7 +295,7 @@
   padding-left: 6px;
   padding-right: 0px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .screenshotButton svg {
@@ -264,7 +311,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .annotationButton svg {
@@ -280,7 +327,7 @@
   padding-left: 2px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .fullscreenButton svg {
@@ -296,7 +343,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .interpolationButton svg {
@@ -312,7 +359,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 101;
 }
 
 .cropButton svg {
@@ -329,7 +376,7 @@
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .tumorButton svg {
@@ -345,7 +392,7 @@
   padding-left: 6px;
   padding-right: 15px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .compareButton svg {
@@ -361,7 +408,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .resetCropButton svg {
@@ -377,7 +424,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .resetCameraButton svg {
@@ -393,7 +440,7 @@
   padding-left: 6px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .viewModeButton svg {
@@ -405,7 +452,7 @@
   width: 8mm;
   padding: 4px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .shadowButton svg {
@@ -422,7 +469,7 @@
   padding-left: 2px;
   padding-right: 6px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .viewPlanesButton svg {
@@ -453,7 +500,7 @@
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .moveFreeButton svg {
@@ -469,7 +516,7 @@
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .moveDepthButton svg {
@@ -486,7 +533,7 @@
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .movePlaneButton svg {
@@ -502,7 +549,7 @@
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .mirrorButton svg {
@@ -512,13 +559,13 @@
 
 .tumorSnapButton {
   flex: 1;
-  height: 8mm;
-  padding-top: 5px;
-  padding-bottom: 2px;
+  height: 6mm;
+  /*padding-top: 2px;*/
+  /*padding-bottom: 2px;*/
   padding-left: 20px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .tumorSnapButton svg {
@@ -528,13 +575,13 @@
 
 .compareSnapButton {
   flex: 1;
-  height: 8mm;
-  padding-top: 5px;
-  padding-bottom: 2px;
+  height: 6mm;
+  /*padding-top: 2px;*/
+  /*padding-bottom: 2px;*/
   padding-left: 6px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .compareSnapButton svg {
@@ -550,7 +597,7 @@
   padding-left: 20px;
   padding-right: 2px;
   cursor: pointer;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .toggleTransferFunctionButton svg {
@@ -572,7 +619,7 @@ input:checked.toggleInput + label {
   color: white;
   border: none;
   font-size: 1.2em;
-  z-index: 1000;
+  z-index: 100;
 }
 
 select {
@@ -592,7 +639,7 @@ select:focus {
   width: 8mm;
   padding: 4px;
   padding-left: 6px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .sampleDistanceButton svg {

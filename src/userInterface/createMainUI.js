@@ -383,7 +383,7 @@ function createMainUI(
     const cropButton = document.createElement('div');
     cropButton.innerHTML = `<input id="${viewerDOMId}-toggleCroppingPlanesButton" type="checkbox" class="${
       style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select ROI [w]" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Select ROI [w]" class="${
       contrastSensitiveStyle.invertibleButton
     } ${style.cropButton} ${
       style.toggleButton
@@ -396,7 +396,7 @@ function createMainUI(
     const resetCropButton = document.createElement('div');
     resetCropButton.innerHTML = `<input id="${viewerDOMId}-resetCroppingPlanesButton" type="checkbox" class="${
       style.toggleInput
-    }" checked><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Reset ROI [e]" class="${
+    }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Reset ROI [e]" class="${
       contrastSensitiveStyle.invertibleButton
     } ${style.resetCropButton} ${
       style.toggleButton
@@ -439,7 +439,7 @@ function createMainUI(
   const resetCameraButton = document.createElement('div');
   resetCameraButton.innerHTML = `<input id="${viewerDOMId}-resetCameraButton" type="checkbox" class="${
     style.toggleInput
-  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Reset camera [r]" class="${
+  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Reset camera [r]" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.resetCameraButton} ${
     style.toggleButton

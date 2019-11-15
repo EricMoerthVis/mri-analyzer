@@ -372,7 +372,7 @@ function vtkSelectionWidget(publicAPI, model) {
   publicAPI.handleMouseMove = (callData) => publicAPI.moveAction(callData);
 
   publicAPI.selectorPlaceToMirror = (value) => {
-    if (!model.primarySelector && model.xAxisMiddelValue !== null && model.mirror) {
+    if (value != null && !model.primarySelector && model.xAxisMiddelValue !== null && model.mirror) {
       const handles = publicAPI.planesToHandles(model.widgetState.planes);
       publicAPI.setHandleSize(value[3]);
       handles[0] = [model.xAxisMiddelValue - (value[0] - model.xAxisMiddelValue), value[1], value[2]];
