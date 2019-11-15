@@ -99,6 +99,7 @@
 
 [itk-vtk-tooltip] {
   position: relative;
+  z-index: 101;
 }
 
 [itk-vtk-tooltip]::before {
@@ -114,7 +115,7 @@
   font-size: 0.9em;
   font-family: monospace;
   border-radius: 3px;
-  background: rgba(0.9, 0.9, 0.9, 0.95);
+  background: rgba(0.9, 0.9, 0.9, 1);
   color: white;
   opacity: 0;
   transform: translate(15px, -50%);
@@ -122,12 +123,12 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-delay: 0.8s;
-  z-index: 3;
+  z-index: 101;
 }
 
 [itk-vtk-tooltip]:hover::before {
   opacity: 1;
-  z-index: 3;
+  z-index: 101;
   transform: translate(0, -50%);
 }
 
@@ -135,7 +136,7 @@
   top: calc(100% + 16px);
   left: 50%;
   right: initial;
-  z-index: 3;
+  z-index: 101;
   transform: translate(-50%, -15px);
 }
 
@@ -153,12 +154,12 @@
 
 [itk-vtk-tooltip-right]:hover::before {
   transform: translate(0, -50%);
-  z-index: 3;
+  z-index: 101;
 }
 
 [itk-vtk-tooltip-top-screenshot]::before {
   top: initial;
-  z-index: 3;
+  z-index: 101;
   left: 260%;
   right: initial;
   bottom: calc(100% + 8px);
@@ -171,7 +172,7 @@
 
 [itk-vtk-tooltip-top-annotation]::before {
   top: initial;
-  z-index: 3;
+  z-index: 101;
   left: 160%;
   right: initial;
   bottom: calc(100% + 10px);
@@ -273,7 +274,7 @@
 
 .fullscreenButton {
   flex: 1;
-  width: 8 m;
+  width: 8em;
   padding-top: 2px;
   padding-bottom: 2px;
   padding-left: 2px;
@@ -603,7 +604,7 @@ select:focus {
   width: 8mm;
   padding: 4px;
   padding-left: 6px;
-  z-index: 1000;
+  z-index: 100;
 }
 
 .gradientOpacitySlider svg {
@@ -622,6 +623,7 @@ select:focus {
   flex: 1;
   min-height: 1rem;
   width: 5px;
+  z-index: 100;
 }
 
 .sliderLabel {

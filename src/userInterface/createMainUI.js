@@ -27,7 +27,6 @@ function createMainUI(
   imageRepresentation,
   view,
   boundingBoxHandle,
-  colors
 ) {
   const uiContainer = document.createElement('div');
   rootContainer.appendChild(uiContainer);

@@ -51,7 +51,7 @@ function createViewPlanesToggle(
   const viewPlanesButton = document.createElement('div');
   viewPlanesButton.innerHTML = `<input id="${viewerDOMId}-toggleSlicingPlanesButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="View planes [s]" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="View planes [s]" class="${
     contrastSensitiveStyle.tooltipButton
   } ${style.viewPlanesButton} ${
     style.toggleButton
@@ -77,7 +77,7 @@ function createUseShadowToggle(
   const useShadowButton = document.createElement('div');
   useShadowButton.innerHTML = `<input id="${viewerDOMId}-toggleShadowButton" type="checkbox" class="${
     style.toggleInput
-  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-top-annotation itk-vtk-tooltip-content="Use shadow" class="${
+  }" checked><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Use shadow" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.shadowButton} ${
     style.toggleButton
@@ -607,7 +607,7 @@ function createGradientOpacitySlider(
   const sliderEntry = document.createElement('div');
   sliderEntry.setAttribute('class', style.sliderEntry);
   sliderEntry.innerHTML = `
-    <div itk-vtk-tooltip itk-vtk-tooltip-top itk-vtk-tooltip-content="Gradient opacity" class="${
+    <div itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Gradient opacity" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.gradientOpacitySlider}">
       ${gradientOpacityIcon}

@@ -8,11 +8,11 @@ workboxSW.precache([
   },
   {
     "url": "index.html",
-    "revision": "878699bf75774835983c2582d9f15d1e"
+    "revision": "916feca2bee2f3f91cd8cb9c0566a846"
   },
   {
     "url": "mriAnalyzer.js",
-    "revision": "49e3e4d49e00b46d1ccd50264e598cdb"
+    "revision": "a03c8bf04e9f7533c7719aed82b0dd7c"
   }
 ])
 
