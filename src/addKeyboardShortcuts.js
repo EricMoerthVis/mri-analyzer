@@ -204,52 +204,12 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compa
     });
   });
 
-  Mousetrap.stopCallback = function () {
+  MOUSETRAP.stopCallback = function () {
     return false;
   }
 
   container.addEventListener('mouseleave', () => {
-    MOUSETRAP.unbind('1');
-    MOUSETRAP.unbind('alt+1');
-    MOUSETRAP.unbind('2');
-    MOUSETRAP.unbind('alt+2');
-    MOUSETRAP.unbind('3');
-    MOUSETRAP.unbind('alt+3');
-    MOUSETRAP.unbind('4');
-    MOUSETRAP.unbind('alt+4');
-    MOUSETRAP.unbind('r');
-    MOUSETRAP.unbind('alt+r');
-    MOUSETRAP.unbind('p');
-    MOUSETRAP.unbind('alt+p');
-    MOUSETRAP.unbind('e');
-    MOUSETRAP.unbind('alt+e');
-    MOUSETRAP.unbind('.');
-    MOUSETRAP.unbind('alt+.');
-    MOUSETRAP.unbind('w');
-    MOUSETRAP.unbind('alt+w');
-    MOUSETRAP.unbind(',');
-    MOUSETRAP.unbind('alt+,');
-    MOUSETRAP.unbind("'");
-    MOUSETRAP.unbind("alt+'");
-    MOUSETRAP.unbind('q');
-    MOUSETRAP.unbind('alt+q');
-    MOUSETRAP.unbind('f');
-    MOUSETRAP.unbind('alt+f');
-    MOUSETRAP.unbind('u');
-    MOUSETRAP.unbind('alt+u');
-    MOUSETRAP.unbind('s');
-    MOUSETRAP.unbind('alt+s');
-    MOUSETRAP.unbind('o');
-    MOUSETRAP.unbind('alt+o');
-    MOUSETRAP.unbind('shift');
-    MOUSETRAP.unbind('ctrl');
-    MOUSETRAP.unbind('m');
-    MOUSETRAP.unbind('t');
-    MOUSETRAP.unbind('alt+t');
-    MOUSETRAP.unbind('c');
-    MOUSETRAP.unbind('alt+c');
-    MOUSETRAP.unbind('x');
-    MOUSETRAP.unbind('y');
+    MOUSETRAP.reset();
   });
 
 }
