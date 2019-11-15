@@ -9,6 +9,9 @@ import mirrorIcon from './icons/mirror.svg';
 import vtkTumorSelectWidget from './widget/SelectionWidget';
 import tumorIcon from './icons/tumor.svg';
 import controlIcon from './icons/control.svg';
+import snapTumorToPlaneIcon from './icons/snapTumorToPlane.svg';
+import snapCompareToPlaneIcon from './icons/snapCompareToPlane.svg';
+import toggleIcon from './icons/toggle.svg';
 
 /**
  * https://css-tricks.com/converting-color-spaces-in-javascript/
@@ -84,6 +87,19 @@ function createSelectionWidgetUI(
    * *********************************
    * START
    */
+    // console.log(`Compare color:${hexToRGB(colors.compare)}`);
+  const compareWidget = vtkTumorSelectWidget.newInstance();
+  compareWidget.setHandleSize(5);
+  compareWidget.setColorBasic(colors.compare);
+  compareWidget.setColorSelect(colors.compare);
+  compareWidget.setFaceHandlesEnabled(false);
+  compareWidget.setSelectionHandle(compareHandle);
+  compareWidget.setEdgeHandlesEnabled(false);
+  compareWidget.setCornerHandlesEnabled(true);
+  compareWidget.setInteractor(view.getInteractor());
+  compareWidget.setEnabled(false);
+  compareWidget.setVolumeMapper(imageRepresentation.getMapper());
+  let controlSelectionEnabled = false;
 
   /**/
   // console.log(`Tumor color:${hexToRGB(colors.tumor)}`);
@@ -91,7 +107,12 @@ function createSelectionWidgetUI(
   tumorWidget.setHandleSize(5);
   tumorWidget.setColorBasic(colors.tumor);
   tumorWidget.setColorSelect(colors.tumor);
-  tumorWidget.setSelectionHandle(tumorHandle);
+  tumorWidget.setSelectionHandle((value) => {
+    compareWidget.selectorPlaceToMirror(value);
+    if (tumorHandle != null) {
+      tumorHandle(value);
+    }
+  });
   tumorWidget.setFaceHandlesEnabled(false);
   tumorWidget.setEdgeHandlesEnabled(false);
   tumorWidget.setCornerHandlesEnabled(true);
@@ -114,29 +135,15 @@ function createSelectionWidgetUI(
   const tumorButton = document.createElement('div');
   tumorButton.innerHTML = `<input id="${viewerDOMId}-toggleTumorSelector" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Tumor" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Tumor" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.tumorButton} ${
+  } ${style.tumorButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
+  }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
   tumorButton.addEventListener('change', (event) => {
     toggleTumorSelection();
   });
   mainUIRow.appendChild(tumorButton);
-
-  // console.log(`Compare color:${hexToRGB(colors.compare)}`);
-  const compareWidget = vtkTumorSelectWidget.newInstance();
-  compareWidget.setHandleSize(5);
-  compareWidget.setColorBasic(colors.compare);
-  compareWidget.setColorSelect(colors.compare);
-  compareWidget.setFaceHandlesEnabled(false);
-  compareWidget.setSelectionHandle(compareHandle);
-  compareWidget.setEdgeHandlesEnabled(false);
-  compareWidget.setCornerHandlesEnabled(true);
-  compareWidget.setInteractor(view.getInteractor());
-  compareWidget.setEnabled(false);
-  compareWidget.setVolumeMapper(imageRepresentation.getMapper());
-  let controlSelectionEnabled = false;
 
 
   function toggleControlSelection() {
@@ -150,9 +157,9 @@ function createSelectionWidgetUI(
   const compareButton = document.createElement('div');
   compareButton.innerHTML = `<input id="${viewerDOMId}-toggleControlSelector" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Control area" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Select Control area" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.compareButton} ${style.toggleButton}" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
+  } ${style.compareButton} ${style.toggleButton}" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
 
   compareButton.addEventListener('change', (event) => {
     toggleControlSelection();
@@ -168,28 +175,37 @@ function createSelectionWidgetUI(
   const moveFreeButton = document.createElement('div');
   moveFreeButton.innerHTML = `<input id="${viewerDOMId}-toggleFreeButtonSelector" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection freely" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection freely" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.moveFreeButton} ${
+  } ${style.moveFreeButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleFreeButtonSelector">${moveFreeIcon}</label>`;
+  }" for="${viewerDOMId}-toggleFreeButtonSelector">${moveFreeIcon}</label>`;
   moveFreeButton.addEventListener('change', (event) => {
-    // TODO some functionality
-    untoggleOtherButtons('-toggleFreeButtonSelector', viewerDOMId);
+    let freeButton = document.getElementById(viewerDOMId + '-toggleFreeButtonSelector');
+    let check = freeButton.checked;
+    untoggleOtherButtons('-toggleFreeButtonSelector', viewerDOMId, tumorWidget, compareWidget);
+    if (freeButton.checked === true && freeButton.checked !== check) { //Default button, check if something changed and if it is checked
+      tumorWidget.setStateToFree();
+      compareWidget.setStateToFree();
+    }
   });
   mainUIRow.appendChild(moveFreeButton);
 
   const moveDepthButton = document.createElement('div');
   moveDepthButton.innerHTML = `<input id="${viewerDOMId}-toggleMoveDepthButton" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection along depth" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection along depth" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.moveDepthButton} ${
+  } ${style.moveDepthButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleMoveDepthButton">${moveDepthIcon}</label>`;
+  }" for="${viewerDOMId}-toggleMoveDepthButton">${moveDepthIcon}</label>`;
   moveDepthButton.addEventListener('change', (event) => {
     // TODO some functionality
-    untoggleOtherButtons('-toggleMoveDepthButton', viewerDOMId);
+    untoggleOtherButtons('-toggleMoveDepthButton', viewerDOMId, tumorWidget, compareWidget);
+    if (document.getElementById(viewerDOMId + '-toggleMoveDepthButton').checked === true) {
+      tumorWidget.setStateToDepth();
+      compareWidget.setStateToDepth();
+    }
   });
   mainUIRow.appendChild(moveDepthButton);
 
@@ -197,46 +213,87 @@ function createSelectionWidgetUI(
   const movePlaneButton = document.createElement('div');
   movePlaneButton.innerHTML = `<input id="${viewerDOMId}-toggleMovePlaneButton" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection on plane" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection on plane" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.movePlaneButton} ${
+  } ${style.movePlaneButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleMovePlaneButton">${movePlaneIcon}</label>`;
+  }" for="${viewerDOMId}-toggleMovePlaneButton">${movePlaneIcon}</label>`;
   movePlaneButton.addEventListener('change', (event) => {
     // TODO some functionality
-    untoggleOtherButtons('-toggleMovePlaneButton', viewerDOMId);
+    untoggleOtherButtons('-toggleMovePlaneButton', viewerDOMId, tumorWidget, compareWidget);
+    if (document.getElementById(viewerDOMId + '-toggleMovePlaneButton').checked === true) {
+      tumorWidget.setStateToPlane();
+      compareWidget.setStateToPlane();
+    }
   });
   mainUIRow.appendChild(movePlaneButton);
-
 
   /**
    * Mirror option
    */
-
   const mirrorButton = document.createElement('div');
   mirrorButton.innerHTML = `<input id="${viewerDOMId}-toggleMirrorButton" type="checkbox" class="${
     style.toggleInput
-    }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection on plane" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Move selection on plane" class="${
     contrastSensitiveStyle.invertibleButton
-    } ${style.mirrorButton} ${
+  } ${style.mirrorButton} ${
     style.toggleButton
-    }" for="${viewerDOMId}-toggleMirrorButton">${mirrorIcon}</label>`;
+  }" for="${viewerDOMId}-toggleMirrorButton">${mirrorIcon}</label>`;
   mirrorButton.addEventListener('change', (event) => {
     // TODO some functionality
-
+    compareWidget.setMirrorState(document.getElementById(viewerDOMId + '-toggleMirrorButton').checked);
   });
   mainUIRow.appendChild(mirrorButton);
-  uiContainer.appendChild(mainUIGroup);
 
-  document.getElementById(viewerDOMId + '-toggleFreeButtonSelector')
-    .click();
-  return {
-    uiContainer
-  };
+  const snapTumorToSliceButton = document.createElement('div');
+  snapTumorToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Snap tumor picker to slice" class="${
+    contrastSensitiveStyle.invertibleButton
+  } ${style.tumorSnapButton}">${snapTumorToPlaneIcon}</div>`;
+  snapTumorToSliceButton.addEventListener('click', () => {
+    tumorWidget.snapToSlice();
+  })
+  mainUIRow.appendChild(snapTumorToSliceButton);
+
+  const snapCompareToSliceButton = document.createElement('div');
+  snapCompareToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Snap compare picker to slice" class="${
+    contrastSensitiveStyle.invertibleButton
+  } ${style.compareSnapButton}">${snapCompareToPlaneIcon}</div>`;
+  snapCompareToSliceButton.addEventListener('click', () => {
+    compareWidget.snapToSlice();
+  })
+  mainUIRow.appendChild(snapCompareToSliceButton);
+
+
+  /**
+   * Transferfunction showing
+   */
+  const toggleButton = document.createElement('div');
+  toggleButton.innerHTML = `<input id="${viewerDOMId}-toggleTransferFunctionButton" type="checkbox" class="${
+    style.toggleInput
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-bottom itk-vtk-tooltip-content="Toggle transferfunction" class="${
+    contrastSensitiveStyle.invertibleButton
+  } ${style.toggleTransferFunctionButton} ${
+    style.toggleButton
+  }" for="${viewerDOMId}-toggleTransferFunctionButton">${toggleIcon}</label>`;
+  toggleButton.addEventListener('change', (event) => {
+    if (!document.getElementById(viewerDOMId + '-toggleTransferFunctionButton').checked) {
+      document.getElementById(viewerDOMId + '-toggleTransferFunction').style.display = 'none';
+      document.getElementById(viewerDOMId + '-toggleColorMap').style.display = 'none';
+    } else {
+      document.getElementById(viewerDOMId + '-toggleTransferFunction').style.display = 'flex';
+      document.getElementById(viewerDOMId + '-toggleColorMap').style.display = 'flex';
+    }
+  });
+  mainUIRow.appendChild(toggleButton);
+
+
+  uiContainer.appendChild(mainUIGroup);
+  document.getElementById(viewerDOMId + '-toggleFreeButtonSelector').click();
+  document.getElementById(viewerDOMId + '-toggleTransferFunctionButton').click();
+  return {tumorWidget, compareWidget};
 }
 
-
-function untoggleOtherButtons(button, viewerDOMId) {
+function untoggleOtherButtons(button, viewerDOMId, tumorWidget, compareWidget) {
   let depthButton = document.getElementById(viewerDOMId + '-toggleMoveDepthButton');
   let planeButton = document.getElementById(viewerDOMId + '-toggleMovePlaneButton');
   let freeButton = document.getElementById(viewerDOMId + '-toggleFreeButtonSelector');
@@ -248,8 +305,13 @@ function untoggleOtherButtons(button, viewerDOMId) {
     planeButton.click();
   }
   if (button !== '-toggleFreeButtonSelector' && freeButton.checked) {
-    console.log("Free buton click");
     freeButton.click();
+  }
+
+  if (!depthButton.checked && !planeButton.checked && !freeButton.checked) {
+    freeButton.checked = true;
+    tumorWidget.setStateToFree();
+    compareWidget.setStateToFree();
   }
 }
 

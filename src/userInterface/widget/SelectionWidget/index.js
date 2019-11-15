@@ -28,6 +28,7 @@ function arrayEquals(a, b) {
 
 function vtkSelectionWidget(publicAPI, model) {
   model.sliceValue = null;
+  model.mirror = false;
   model.xAxisMiddelValue = null;
   model.colorInitial = [1, 1, 1];
   model.colorSelect = [0, 1, 0];
@@ -370,21 +371,8 @@ function vtkSelectionWidget(publicAPI, model) {
 
   publicAPI.handleMouseMove = (callData) => publicAPI.moveAction(callData);
 
-  publicAPI.handleKeyDown = (callData) => publicAPI.keyDown(callData);
-
-  publicAPI.handleKeyUp = (callData) => publicAPI.keyUp(callData);
-
-  publicAPI.snapToSliceKey = (key) => {
-    model.snapToSliceKeyValue = key;
-  };
-
-  publicAPI.primarySelectorValue = (value) => {
-    model.primarySelector = value;
-  };
-
   publicAPI.selectorPlaceToMirror = (value) => {
-    if (!model.primarySelector && model.xAxisMiddelValue !== null &&
-      model.selectionState.controlState === SelectionState.MIRROR) {
+    if (!model.primarySelector && model.xAxisMiddelValue !== null && model.mirror) {
       const handles = publicAPI.planesToHandles(model.widgetState.planes);
       publicAPI.setHandleSize(value[3]);
       handles[0] = [model.xAxisMiddelValue - (value[0] - model.xAxisMiddelValue), value[1], value[2]];
@@ -401,63 +389,31 @@ function vtkSelectionWidget(publicAPI, model) {
     }
   };
 
-  publicAPI.keyDown = (callData) => {
-    const planes = model.widgetState.planes;
-    const handles = publicAPI.planesToHandles(planes);
-    switch (callData.key) {
-      case 'Shift':
-        model.selectionState.controlState = SelectionState.PLANE;
-        break;
-      case 'Control':
-        model.selectionState.controlState = SelectionState.DEPTH;
-        break;
-      case 'b':
-      case 'B':
-        // mirror another picker mode
-        if (!model.primarySelector) {
-          if (model.selectionState.controlState === SelectionState.MIRROR) {
-            model.selectionState.controlState = SelectionState.DEFAULT;
-          } else {
-            model.selectionState.controlState = SelectionState.MIRROR;
-            if (model.valueSave !== null) {
-              publicAPI.selectorPlaceToMirror(model.valueSave);
-            }
-          }
-        }
-        break;
-      case 'c':
-      case 'C':
-        if (model.snapToSliceKeyValue === 'C') {
-          handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
-          publicAPI.updateRepresentation();
-          publicAPI.modified();
-        }
-        break;
-      case 't':
-      case 'T':
-        if (model.snapToSliceKeyValue === 'T') {
-          handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
-          publicAPI.updateRepresentation();
-          publicAPI.modified();
-        }
-        break;
-      default:
-        break;
-    }
-  };
+  publicAPI.setStateToPlane = () => {
+    model.selectionState.controlState = SelectionState.PLANE;
+  }
 
-  publicAPI.keyUp = (callData) => {
-    // console.log(callData);
-    switch (callData.key) {
-      case 'Shift':
-      case 'Control':
-        model.selectionState.controlState = SelectionState.DEFAULT;
-        break;
-      default:
-        break;
-    }
-  };
+  publicAPI.setStateToDepth = () => {
+    model.selectionState.controlState = SelectionState.DEPTH;
+  }
 
+  publicAPI.setStateToFree = () => {
+    model.selectionState.controlState = SelectionState.DEFAULT;
+  }
+
+  publicAPI.setMirrorState = (mirror) => {
+    model.mirror = mirror;
+    if (mirror && model.valueSave !== null) {
+      publicAPI.selectorPlaceToMirror(model.valueSave);
+    }
+  }
+
+  publicAPI.snapToSlice = () => {
+    const handles = publicAPI.planesToHandles(model.widgetState.planes);
+    handles[0] = [handles[0][0], handles[0][1], model.sliceValue];
+    publicAPI.updateRepresentation();
+    publicAPI.modified();
+  }
   let mousePos = null;
 
   publicAPI.pressAction = (callData) => {

@@ -19,9 +19,9 @@ function createFileDragAndDrop(container, onDataChange) {
 
   const fileInput = fileContainer.querySelector('input');
 
-  MOUSETRAP.bind('enter', (event) => {
-    fileInput.click();
-  })
+  // MOUSETRAP.bind('enter', (event) => {
+  //   fileInput.click();
+  // })
 
   function handleFile(e) {
     preventDefaults(e);

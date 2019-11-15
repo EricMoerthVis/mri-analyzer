@@ -193,6 +193,7 @@ function createTransferFunctionWidget(
   const transferFunctionWidgetRow = document.createElement('div');
   transferFunctionWidgetRow.setAttribute('class', style.uiRow);
   transferFunctionWidgetRow.className += ` ${viewerDOMId}-toggle`;
+  transferFunctionWidgetRow.setAttribute('id', `${viewerDOMId}-toggleTransferFunction`);
   transferFunctionWidgetRow.appendChild(piecewiseWidgetContainer);
   uiContainer.appendChild(transferFunctionWidgetRow);
 
@@ -660,6 +661,7 @@ function createImageUI(
       renderWindow
     );
     presetRow.className += ` ${viewerDOMId}-toggle`;
+    presetRow.setAttribute('id', `${viewerDOMId}-toggleColorMap`);
     imageUIGroup.appendChild(presetRow);
   }
 

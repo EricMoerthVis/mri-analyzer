@@ -3,7 +3,7 @@ import preventDefaults from './userInterface/preventDefaults';
 
 const MOUSETRAP = new Mousetrap();
 
-const addKeyboardShortcuts = (container, viewer, viewerDOMId) => {
+const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compareWidget) => {
 
   container.addEventListener('mouseenter', () => {
     MOUSETRAP.bind('1', function(event, combo) {
@@ -154,6 +154,48 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId) => {
       const toggleSlicingPlanesButton = document.getElementById(`${viewerDOMId}-toggleSlicingPlanesButton`);
       toggleSlicingPlanesButton.click();
     })
+
+
+    MOUSETRAP.bind('shift', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleMovePlaneButton').click();
+    })
+
+    MOUSETRAP.bind('ctrl', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleMoveDepthButton').click();
+    })
+
+    MOUSETRAP.bind('m', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleMirrorButton').click();
+    })
+
+    MOUSETRAP.bind('t', function(event, combo) {
+      preventDefaults(event);
+      tumorWidget.snapToSlice();
+    });
+
+    MOUSETRAP.bind('alt+t', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleTumorSelector').click();
+    });
+
+    MOUSETRAP.bind('c', function(event, combo) {
+      preventDefaults(event);
+      compareWidget.snapToSlice();
+    });
+
+    MOUSETRAP.bind('alt+c', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleControlSelector').click();
+    });
+
+    MOUSETRAP.bind('x', function(event, combo) {
+      preventDefaults(event);
+      document.getElementById(viewerDOMId + '-toggleTransferFunctionButton').click();
+    });
+
   })
 
   container.addEventListener('mouseleave', () => {
@@ -189,6 +231,14 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId) => {
     MOUSETRAP.unbind('alt+s');
     MOUSETRAP.unbind('o');
     MOUSETRAP.unbind('alt+o');
+    MOUSETRAP.unbind('shift');
+    MOUSETRAP.unbind('ctrl');
+    MOUSETRAP.unbind('m');
+    MOUSETRAP.unbind('t');
+    MOUSETRAP.unbind('alt+t');
+    MOUSETRAP.unbind('c');
+    MOUSETRAP.unbind('alt+c');
+    MOUSETRAP.unbind('x');
   })
 }
 

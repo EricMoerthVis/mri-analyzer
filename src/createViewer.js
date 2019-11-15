@@ -19,7 +19,7 @@ const STYLE_CONTAINER = {
   padding: '0',
   top: '0',
   left: '0',
-  overflow: 'hidden'
+  overflow: 'hidden',
 };
 
 function applyStyle(el, style) {
@@ -137,7 +137,7 @@ const createViewer = (
       .toString()
       .replace('.', '');
 
-  const {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler, compareWidget, tumorWidget} = userInterface.createMainUI(
+  const {uiContainer, croppingWidget, addCroppingPlanesChangedHandler, addResetCropHandler} = userInterface.createMainUI(
     rootContainer,
     viewerDOMId,
     isBackgroundDark,
@@ -149,6 +149,16 @@ const createViewer = (
     boundingBoxHandle,
   );
 
+  const {tumorWidget, compareWidget} = userInterface.createSelectionWidgetUI(
+    uiContainer,
+    viewerDOMId,
+    isBackgroundDark,
+    imageRepresentation,
+    view,
+    tumorHandle,
+    compareHandle,
+    colors,
+  );
 
   if (image) {
     imageUI = userInterface.createImageUI(
@@ -174,17 +184,6 @@ const createViewer = (
     const annotationContainer = container.querySelector('.js-se');
     annotationContainer.style.fontFamily = 'monospace';
   }
-
-  userInterface.createSelectionWidgetUI(
-    uiContainer,
-    viewerDOMId,
-    isBackgroundDark,
-    imageRepresentation,
-    view,
-    tumorHandle,
-    compareHandle,
-    colors,
-  );
 
   view.resize();
   const resizeSensor = new ResizeSensor(container, function () {
@@ -664,7 +663,7 @@ const createViewer = (
   //publicAPI.loadState = (state) => {
   //// todo
   //}
-  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId);
+  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId, tumorWidget, compareWidget);
 
   return publicAPI;
 };

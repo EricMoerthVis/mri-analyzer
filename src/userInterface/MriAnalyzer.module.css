@@ -503,6 +503,54 @@
   width: 1.2em;
 }
 
+.tumorSnapButton {
+  flex: 1;
+  height: 8mm;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  padding-left: 20px;
+  padding-right: 2px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.tumorSnapButton svg {
+  height: 1.4em;
+  width: 1.6em;
+}
+
+.compareSnapButton {
+  flex: 1;
+  height: 8mm;
+  padding-top: 5px;
+  padding-bottom: 2px;
+  padding-left: 6px;
+  padding-right: 2px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.compareSnapButton svg {
+  height: 1.4em;
+  width: 1.6em;
+}
+
+.toggleTransferFunctionButton {
+  flex: 1;
+  height: 8mm;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  padding-left: 20px;
+  padding-right: 2px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.toggleTransferFunctionButton svg {
+  height: 1.2em;
+  width: 1.2em;
+}
+
 
 /*END*/
 
