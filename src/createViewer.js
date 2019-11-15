@@ -198,30 +198,6 @@ const createViewer = (
   publicAPI.renderLater = () => {
     view.renderLater();
   };
-
-  let updatingImage = false;
-  publicAPI.setImage = (image, cropReset = false) => {
-    if (updatingImage) {
-      return;
-    }
-    updatingImage = true;
-    imageSource.setInputData(image);
-    imageUI.transferFunctionWidget.setDataArray(image.getPointData()
-      .getScalars()
-      .getData());
-    imageUI.transferFunctionWidget.invokeOpacityChange(imageUI.transferFunctionWidget);
-    imageUI.transferFunctionWidget.modified();
-    croppingWidget.setVolumeMapper(imageRepresentation.getMapper());
-    const cropFilter = imageRepresentation.getCropFilter();
-    // cropFilter.reset();
-    // croppingWidget.resetWidgetState();
-    setTimeout(() => {
-      imageUI.transferFunctionWidget.render();
-      view.getRenderWindow()
-        .render();
-      updatingImage = false;
-    }, 0);
-  };
   // publicAPI.setImage = macro.throttle(setImage, 100);
 
   const toggleUserInterfaceButton = document.getElementById(`${viewerDOMId}-toggleUserInterfaceButton`);
@@ -433,6 +409,17 @@ const createViewer = (
     }
   };
 
+  publicAPI.setImage = (newImage) => {
+    imageSource.setInputData(newImage);
+    imageUI.transferFunctionWidget.setDataArray(newImage.getPointData()
+      .getScalars()
+      .getData());
+    imageUI.transferFunctionWidget.invokeOpacityChange(imageUI.transferFunctionWidget);
+    imageUI.transferFunctionWidget.modified();
+    croppingWidget.setVolumeMapper(imageRepresentation.getMapper());
+    imageUI.transferFunctionWidget.render();
+    view.getRenderWindow().render();
+  };
 
   if (!use2D) {
     const xPlaneButton = document.getElementById(`${viewerDOMId}-xPlaneButton`);

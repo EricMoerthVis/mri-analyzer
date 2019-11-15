@@ -199,11 +199,14 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compa
     MOUSETRAP.bind('y', function (event, combo) {
       preventDefaults(event);
       if (simiCallback !== null && simiCallback !== undefined) {
-        console.log("SimiCallback");
         simiCallback();
       }
     });
-  })
+  });
+
+  Mousetrap.stopCallback = function () {
+    return false;
+  }
 
   container.addEventListener('mouseleave', () => {
     MOUSETRAP.unbind('1');
@@ -247,7 +250,8 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compa
     MOUSETRAP.unbind('alt+c');
     MOUSETRAP.unbind('x');
     MOUSETRAP.unbind('y');
-  })
+  });
+
 }
 
 export default addKeyboardShortcuts;
