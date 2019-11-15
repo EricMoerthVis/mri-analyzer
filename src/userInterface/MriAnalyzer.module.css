@@ -122,11 +122,12 @@
   transition-duration: 0.3s;
   transition-timing-function: ease-in-out;
   transition-delay: 0.8s;
-  z-index: 1;
+  z-index: 3;
 }
 
 [itk-vtk-tooltip]:hover::before {
   opacity: 1;
+  z-index: 3;
   transform: translate(0, -50%);
 }
 
@@ -134,6 +135,7 @@
   top: calc(100% + 16px);
   left: 50%;
   right: initial;
+  z-index: 3;
   transform: translate(-50%, -15px);
 }
 
@@ -143,6 +145,7 @@
 
 [itk-vtk-tooltip-right]::before {
   top: 50%;
+  z-index: 3;
   left: calc(100% + 16px);
   right: initial;
   transform: translate(-15px, -50%);
@@ -150,10 +153,12 @@
 
 [itk-vtk-tooltip-right]:hover::before {
   transform: translate(0, -50%);
+  z-index: 3;
 }
 
 [itk-vtk-tooltip-top-screenshot]::before {
   top: initial;
+  z-index: 3;
   left: 260%;
   right: initial;
   bottom: calc(100% + 8px);
@@ -166,6 +171,7 @@
 
 [itk-vtk-tooltip-top-annotation]::before {
   top: initial;
+  z-index: 3;
   left: 160%;
   right: initial;
   bottom: calc(100% + 10px);
