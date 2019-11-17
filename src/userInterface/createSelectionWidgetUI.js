@@ -135,7 +135,7 @@ function createSelectionWidgetUI(
   const tumorButton = document.createElement('div');
   tumorButton.innerHTML = `<input id="${viewerDOMId}-toggleTumorSelector" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Tumor" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Tumor (alt+t)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.tumorButton} ${
     style.toggleButton
@@ -157,7 +157,7 @@ function createSelectionWidgetUI(
   const compareButton = document.createElement('div');
   compareButton.innerHTML = `<input id="${viewerDOMId}-toggleControlSelector" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Control area" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Control area (atl+c)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.compareButton} ${style.toggleButton}" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
 
@@ -194,7 +194,7 @@ function createSelectionWidgetUI(
   const moveDepthButton = document.createElement('div');
   moveDepthButton.innerHTML = `<input id="${viewerDOMId}-toggleMoveDepthButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection along depth" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection along depth (ctrl)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.moveDepthButton} ${
     style.toggleButton
@@ -213,7 +213,7 @@ function createSelectionWidgetUI(
   const movePlaneButton = document.createElement('div');
   movePlaneButton.innerHTML = `<input id="${viewerDOMId}-toggleMovePlaneButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection on plane" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection on plane (shift)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.movePlaneButton} ${
     style.toggleButton
@@ -234,7 +234,7 @@ function createSelectionWidgetUI(
   const mirrorButton = document.createElement('div');
   mirrorButton.innerHTML = `<input id="${viewerDOMId}-toggleMirrorButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection on plane" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Mirror compare picker with main picker (m)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.mirrorButton} ${
     style.toggleButton
@@ -246,7 +246,7 @@ function createSelectionWidgetUI(
   mainUIRow.appendChild(mirrorButton);
 
   const snapTumorToSliceButton = document.createElement('div');
-  snapTumorToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap tumor picker to slice" class="${
+  snapTumorToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap tumor picker to slice (t)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.tumorSnapButton}">${snapTumorToPlaneIcon}</div>`;
   snapTumorToSliceButton.addEventListener('click', () => {
@@ -255,7 +255,7 @@ function createSelectionWidgetUI(
   mainUIRow.appendChild(snapTumorToSliceButton);
 
   const snapCompareToSliceButton = document.createElement('div');
-  snapCompareToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap compare picker to slice" class="${
+  snapCompareToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap compare picker to slice (c)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.compareSnapButton}">${snapCompareToPlaneIcon}</div>`;
   snapCompareToSliceButton.addEventListener('click', () => {
@@ -270,7 +270,7 @@ function createSelectionWidgetUI(
   const toggleButton = document.createElement('div');
   toggleButton.innerHTML = `<input id="${viewerDOMId}-toggleTransferFunctionButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Toggle transferfunction" class="${
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Toggle transferfunction (x)" class="${
     contrastSensitiveStyle.invertibleButton
   } ${style.toggleTransferFunctionButton} ${
     style.toggleButton
