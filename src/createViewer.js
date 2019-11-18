@@ -409,7 +409,7 @@ const createViewer = (
     }
   };
 
-  publicAPI.setImage = (newImage) => {
+  publicAPI.setImage = (newImage, slice) => {
     imageSource.setInputData(newImage);
     imageUI.transferFunctionWidget.setDataArray(newImage.getPointData()
       .getScalars()
@@ -417,6 +417,9 @@ const createViewer = (
     imageUI.transferFunctionWidget.invokeOpacityChange(imageUI.transferFunctionWidget);
     imageUI.transferFunctionWidget.modified();
     croppingWidget.setVolumeMapper(imageRepresentation.getMapper());
+    if(slice !== null && slice !== undefined){
+      imageUI.setZSliceFunction(slice);
+    }
     imageUI.transferFunctionWidget.render();
     view.getRenderWindow().render();
   };

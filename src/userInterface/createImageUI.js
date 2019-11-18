@@ -436,12 +436,32 @@ function createPlaneIndexSliders(
     renderWindow.render();
   }
 
+  function setZSlice(value) {
+    volumeRepresentation.setZSlice(value);
+    if (sliceSelectionHandle != null) {
+      sliceSelectionHandle("z", value);
+    }
+    const valueString = String(zSliceElement.value).substring(
+      0,
+      numberOfValueChars
+    );
+    const padLength =
+      valueString.length < numberOfValueChars
+        ? numberOfValueChars - valueString.length
+        : 0;
+    const pad = '&nbsp;'.repeat(padLength);
+    zPlaneLabel.innerHTML = `Z: ${pad}${valueString}`;
+    renderWindow.render();
+  }
+
   zSliceElement.addEventListener('input', updateZSlice);
   zPlaneRow.appendChild(zSliderEntry);
   // updateZSlice();
   zPlaneRow.style.display = 'none';
 
   uiContainer.appendChild(zPlaneRow);
+
+  return (value) => setZSlice(value);
 }
 
 function createColorPresetSelector(
@@ -712,7 +732,7 @@ function createImageUI(
     );
     imageUIGroup.appendChild(volumeRenderingRow);
 
-    createPlaneIndexSliders(
+    let setZSliceFunction = createPlaneIndexSliders(
       imageUIGroup,
       viewerDOMId,
       volumeRepresentation,
@@ -724,7 +744,7 @@ function createImageUI(
 
   uiContainer.appendChild(imageUIGroup);
 
-  return {transferFunctionWidget, updateGradientOpacity, updateColorMap};
+  return {transferFunctionWidget, updateGradientOpacity, updateColorMap, setZSliceFunction};
 }
 
 export default createImageUI;
