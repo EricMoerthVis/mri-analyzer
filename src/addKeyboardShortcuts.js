@@ -3,7 +3,7 @@ import preventDefaults from './userInterface/preventDefaults';
 
 const MOUSETRAP = new Mousetrap();
 
-const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compareWidget, simiCallback) => {
+const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compareWidget) => {
 
   container.addEventListener('mouseenter', () => {
     MOUSETRAP.bind('1', function (event, combo) {
@@ -198,9 +198,7 @@ const addKeyboardShortcuts = (container, viewer, viewerDOMId, tumorWidget, compa
 
     MOUSETRAP.bind('y', function (event, combo) {
       preventDefaults(event);
-      if (simiCallback !== null && simiCallback !== undefined) {
-        simiCallback();
-      }
+      document.getElementById(viewerDOMId + '-toggleSimiViewButton').click();
     });
   });
 

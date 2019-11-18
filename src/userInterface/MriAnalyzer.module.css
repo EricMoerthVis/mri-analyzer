@@ -589,6 +589,22 @@
   width: 1.6em;
 }
 
+.simiViewButton {
+  flex: 1;
+  height: 6mm;
+  /*padding-top: 2px;*/
+  /*padding-bottom: 2px;*/
+  padding-left: 6px;
+  padding-right: 2px;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.simiViewButton svg {
+  height: 1.4em;
+  width: 1.6em;
+}
+
 .toggleTransferFunctionButton {
   flex: 1;
   height: 8mm;

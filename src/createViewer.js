@@ -157,6 +157,7 @@ const createViewer = (
     tumorHandle,
     compareHandle,
     colors,
+    simiCallback,
   );
 
   if (image) {
@@ -650,7 +651,7 @@ const createViewer = (
   //publicAPI.loadState = (state) => {
   //// todo
   //}
-  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId, tumorWidget, compareWidget, simiCallback);
+  addKeyboardShortcuts(rootContainer, publicAPI, viewerDOMId, tumorWidget, compareWidget);
 
   return publicAPI;
 };

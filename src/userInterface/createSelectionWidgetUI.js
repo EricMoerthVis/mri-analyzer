@@ -11,6 +11,7 @@ import tumorIcon from './icons/tumor.svg';
 import controlIcon from './icons/control.svg';
 import snapTumorToPlaneIcon from './icons/snapTumorToPlane.svg';
 import snapCompareToPlaneIcon from './icons/snapCompareToPlane.svg';
+import simiViewIcon from './icons/simiView.svg';
 import toggleIcon from './icons/toggle.svg';
 
 /**
@@ -52,7 +53,8 @@ function createSelectionWidgetUI(
   view,
   tumorHandle,
   compareHandle,
-  colors
+  colors,
+  simiCallback,
 ) {
   if (!(colors === null || colors === undefined)) {
     // eslint-disable-next-line no-param-reassign
@@ -263,7 +265,21 @@ function createSelectionWidgetUI(
   })
   mainUIRow.appendChild(snapCompareToSliceButton);
 
-
+  const simiViewButton = document.createElement('div');
+  simiViewButton.innerHTML = `<input id="${viewerDOMId}-toggleSimiViewButton" type="checkbox" class="${
+    style.toggleInput
+  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Similarity view toggle (y)" class="${
+    contrastSensitiveStyle.invertibleButton
+  } ${style.simiViewButton} ${
+    style.toggleButton
+  }" for="${viewerDOMId}-toggleSimiViewButton">${simiViewIcon}</label>`;
+  simiViewButton.addEventListener('change', (event) => {
+    // TODO some functionality
+    if (simiCallback !== null && simiCallback !== undefined) {
+      simiCallback(document.getElementById(viewerDOMId + '-toggleSimiViewButton').checked);
+    }
+  });
+  mainUIRow.appendChild(simiViewButton);
   /**
    * Transferfunction showing
    */
