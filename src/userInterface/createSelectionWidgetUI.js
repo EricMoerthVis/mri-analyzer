@@ -95,7 +95,12 @@ function createSelectionWidgetUI(
   compareWidget.setColorBasic(colors.compare);
   compareWidget.setColorSelect(colors.compare);
   compareWidget.setFaceHandlesEnabled(false);
-  compareWidget.setSelectionHandle(compareHandle);
+  compareWidget.setSelectionHandle((value) => {
+    view.updateComparePicker([value[0].toFixed(2), value[1].toFixed(2), value[2].toFixed(2), value[3].toFixed(2)]);
+    if (compareHandle != null) {
+      compareHandle(value);
+    }
+  });
   compareWidget.setEdgeHandlesEnabled(false);
   compareWidget.setCornerHandlesEnabled(true);
   compareWidget.setInteractor(view.getInteractor());
@@ -111,6 +116,7 @@ function createSelectionWidgetUI(
   tumorWidget.setColorSelect(colors.tumor);
   tumorWidget.setSelectionHandle((value) => {
     compareWidget.selectorPlaceToMirror(value);
+    view.updateMainPicker([value[0].toFixed(2), value[1].toFixed(2), value[2].toFixed(2), value[3].toFixed(2)]);
     if (tumorHandle != null) {
       tumorHandle(value);
     }
@@ -137,11 +143,11 @@ function createSelectionWidgetUI(
   const tumorButton = document.createElement('div');
   tumorButton.innerHTML = `<input id="${viewerDOMId}-toggleTumorSelector" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Tumor (alt+t)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Tumor (alt+t)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.tumorButton} ${
+    } ${style.tumorButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
+    }" for="${viewerDOMId}-toggleTumorSelector">${tumorIcon}</label>`;
   tumorButton.addEventListener('change', (event) => {
     toggleTumorSelection();
   });
@@ -159,9 +165,9 @@ function createSelectionWidgetUI(
   const compareButton = document.createElement('div');
   compareButton.innerHTML = `<input id="${viewerDOMId}-toggleControlSelector" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Control area (atl+c)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-tumor itk-vtk-tooltip-content="Select Control area (atl+c)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.compareButton} ${style.toggleButton}" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
+    } ${style.compareButton} ${style.toggleButton}" for="${viewerDOMId}-toggleControlSelector">${controlIcon}</label>`;
 
   compareButton.addEventListener('change', (event) => {
     toggleControlSelection();
@@ -177,11 +183,11 @@ function createSelectionWidgetUI(
   const moveFreeButton = document.createElement('div');
   moveFreeButton.innerHTML = `<input id="${viewerDOMId}-toggleFreeButtonSelector" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection freely" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection freely" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.moveFreeButton} ${
+    } ${style.moveFreeButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleFreeButtonSelector">${moveFreeIcon}</label>`;
+    }" for="${viewerDOMId}-toggleFreeButtonSelector">${moveFreeIcon}</label>`;
   moveFreeButton.addEventListener('change', (event) => {
     let freeButton = document.getElementById(viewerDOMId + '-toggleFreeButtonSelector');
     let check = freeButton.checked;
@@ -196,11 +202,11 @@ function createSelectionWidgetUI(
   const moveDepthButton = document.createElement('div');
   moveDepthButton.innerHTML = `<input id="${viewerDOMId}-toggleMoveDepthButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection along depth (ctrl)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection along depth (ctrl)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.moveDepthButton} ${
+    } ${style.moveDepthButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleMoveDepthButton">${moveDepthIcon}</label>`;
+    }" for="${viewerDOMId}-toggleMoveDepthButton">${moveDepthIcon}</label>`;
   moveDepthButton.addEventListener('change', (event) => {
     // TODO some functionality
     untoggleOtherButtons('-toggleMoveDepthButton', viewerDOMId, tumorWidget, compareWidget);
@@ -215,11 +221,11 @@ function createSelectionWidgetUI(
   const movePlaneButton = document.createElement('div');
   movePlaneButton.innerHTML = `<input id="${viewerDOMId}-toggleMovePlaneButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection on plane (shift)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Move selection on plane (shift)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.movePlaneButton} ${
+    } ${style.movePlaneButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleMovePlaneButton">${movePlaneIcon}</label>`;
+    }" for="${viewerDOMId}-toggleMovePlaneButton">${movePlaneIcon}</label>`;
   movePlaneButton.addEventListener('change', (event) => {
     // TODO some functionality
     untoggleOtherButtons('-toggleMovePlaneButton', viewerDOMId, tumorWidget, compareWidget);
@@ -236,11 +242,11 @@ function createSelectionWidgetUI(
   const mirrorButton = document.createElement('div');
   mirrorButton.innerHTML = `<input id="${viewerDOMId}-toggleMirrorButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Mirror compare picker with main picker (m)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Mirror compare picker with main picker (m)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.mirrorButton} ${
+    } ${style.mirrorButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleMirrorButton">${mirrorIcon}</label>`;
+    }" for="${viewerDOMId}-toggleMirrorButton">${mirrorIcon}</label>`;
   mirrorButton.addEventListener('change', (event) => {
     // TODO some functionality
     compareWidget.setMirrorState(document.getElementById(viewerDOMId + '-toggleMirrorButton').checked);
@@ -250,7 +256,7 @@ function createSelectionWidgetUI(
   const snapTumorToSliceButton = document.createElement('div');
   snapTumorToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap tumor picker to slice (t)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.tumorSnapButton}">${snapTumorToPlaneIcon}</div>`;
+    } ${style.tumorSnapButton}">${snapTumorToPlaneIcon}</div>`;
   snapTumorToSliceButton.addEventListener('click', () => {
     tumorWidget.snapToSlice();
   })
@@ -259,7 +265,7 @@ function createSelectionWidgetUI(
   const snapCompareToSliceButton = document.createElement('div');
   snapCompareToSliceButton.innerHTML = `<div itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Snap compare picker to slice (c)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.compareSnapButton}">${snapCompareToPlaneIcon}</div>`;
+    } ${style.compareSnapButton}">${snapCompareToPlaneIcon}</div>`;
   snapCompareToSliceButton.addEventListener('click', () => {
     compareWidget.snapToSlice();
   })
@@ -268,11 +274,11 @@ function createSelectionWidgetUI(
   const simiViewButton = document.createElement('div');
   simiViewButton.innerHTML = `<input id="${viewerDOMId}-toggleSimiViewButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Similarity view toggle (y)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Similarity view toggle (y)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.simiViewButton} ${
+    } ${style.simiViewButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleSimiViewButton">${simiViewIcon}</label>`;
+    }" for="${viewerDOMId}-toggleSimiViewButton">${simiViewIcon}</label>`;
   simiViewButton.addEventListener('change', (event) => {
     // TODO some functionality
     if (simiCallback !== null && simiCallback !== undefined) {
@@ -286,11 +292,11 @@ function createSelectionWidgetUI(
   const toggleButton = document.createElement('div');
   toggleButton.innerHTML = `<input id="${viewerDOMId}-toggleTransferFunctionButton" type="checkbox" class="${
     style.toggleInput
-  }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Toggle transferfunction (x)" class="${
+    }"><label itk-vtk-tooltip itk-vtk-tooltip-top-selectionWidget itk-vtk-tooltip-content="Toggle transferfunction (x)" class="${
     contrastSensitiveStyle.invertibleButton
-  } ${style.toggleTransferFunctionButton} ${
+    } ${style.toggleTransferFunctionButton} ${
     style.toggleButton
-  }" for="${viewerDOMId}-toggleTransferFunctionButton">${toggleIcon}</label>`;
+    }" for="${viewerDOMId}-toggleTransferFunctionButton">${toggleIcon}</label>`;
   toggleButton.addEventListener('change', (event) => {
     const tfF = document.getElementById(viewerDOMId + '-toggleTransferFunction');
     const cm = document.getElementById(viewerDOMId + '-toggleColorMap');

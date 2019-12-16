@@ -6,7 +6,7 @@ import vtkActor from 'vtk.js/Sources/Rendering/Core/Actor';
 import vtkCubeSource from 'vtk.js/Sources/Filters/Sources/CubeSource';
 import vtkMapper from 'vtk.js/Sources/Rendering/Core/Mapper';
 
-const { vtkErrorMacro } = macro;
+const {vtkErrorMacro} = macro;
 
 // ----------------------------------------------------------------------------
 // MriAnalyzer methods
@@ -70,6 +70,26 @@ function MriAnalyzerProxy(publicAPI, model) {
     }
   }
 
+  publicAPI.updateMainPicker = (data) => {
+    console.log(data);
+    publicAPI.updateCornerAnnotation({
+      mainPicker0: data[0],
+      mainPicker1: data[1],
+      mainPicker2: data[2],
+      mainPicker3: data[3],
+    });
+  };
+
+  publicAPI.updateComparePicker = (data) => {
+    console.log(data);
+    publicAPI.updateCornerAnnotation({
+      comparePicker0: data[0],
+      comparePicker1: data[1],
+      comparePicker2: data[2],
+      comparePicker3: data[3],
+    });
+  };
+
   function updateAnnotations(callData) {
     const renderPosition = callData.position;
     model.annotationPicker.pick(
@@ -88,8 +108,8 @@ function MriAnalyzerProxy(publicAPI, model) {
       if (ijk.length > 0 && worldPositions.length > 0) {
         const worldPosition = worldPositions[0];
         model.dataProbeCubeSource.setCenter(worldPosition);
-        model.dataProbeActor.setVisibility(true);
-        model.dataProbeFrameActor.setVisibility(true);
+        // model.dataProbeActor.setVisibility(true);
+        // model.dataProbeFrameActor.setVisibility(true);
         publicAPI.updateCornerAnnotation({
           iIndex: ijk[0],
           jIndex: ijk[1],
@@ -110,7 +130,7 @@ function MriAnalyzerProxy(publicAPI, model) {
 
   publicAPI.setCornerAnnotation(
     'se',
-    '<table style="margin-left: 0;"><tr><td style="margin-left: auto; margin-right: 0;">Index:</td><td>${iIndex},</td><td>${jIndex},</td><td>${kIndex}</td></tr><tr><td style="margin-left: auto; margin-right: 0;">Position:</td><td>${xPosition},</td><td>${yPosition},</td><td>${zPosition}</td></tr><tr><td style="margin-left: auto; margin-right: 0;"">Value:</td><td>${value}</td></tr></table>'
+    '<table style="margin-left: 0;"><tr><td style="margin-left: auto; margin-right: 0;">Index:</td><td>${iIndex},</td><td>${jIndex},</td><td>${kIndex}</td></tr><tr><td style="margin-left: auto; margin-right: 0;">Position:</td><td>${xPosition},</td><td>${yPosition},</td><td>${zPosition}</td></tr><tr><td style="margin-left: auto; margin-right: 0;"">Value:</td><td>${value}</td></tr><tr><td style="margin-left: auto; margin-right: 0;">Main Picker:</td><td>${mainPicker0},</td><td>${mainPicker1},</td><td>${mainPicker2}</td><td>${mainPicker3}</td></tr><tr><td style="margin-left: auto; margin-right: 0;">Compare Picker:</td><td>${comparePicker0},</td><td>${comparePicker1},</td><td>${comparePicker2}</td><td>${comparePicker3}</td></tr></table>'
   );
   publicAPI.updateCornerAnnotation({
     iIndex: '&nbsp;N/A',
@@ -119,8 +139,15 @@ function MriAnalyzerProxy(publicAPI, model) {
     xPosition: '&nbsp;N/A',
     yPosition: '&nbsp;N/A',
     zPosition: '&nbsp;N/A',
-    value:
-      'N/A&nbsp;',
+    value: 'N/A&nbsp;',
+    mainPicker0: 'N/A&nbsp;',
+    mainPicker1: 'N/A&nbsp;',
+    mainPicker2: 'N/A&nbsp;',
+    mainPicker3: 'N/A&nbsp;',
+    comparePicker0: 'N/A&nbsp;',
+    comparePicker1: 'N/A&nbsp;',
+    comparePicker2: 'N/A&nbsp;',
+    comparePicker3: 'N/A&nbsp;',
   });
   publicAPI.setAnnotationOpacity(0.0);
   model.annotationPicker = vtkPointPicker.newInstance();
@@ -323,10 +350,11 @@ export function extend(publicAPI, model, initialValues = {}) {
   // Object specific methods
   MriAnalyzerProxy(publicAPI, model);
 }
+
 // ----------------------------------------------------------------------------
 
 export const newInstance = macro.newInstance(extend, 'MriAnalyzer');
 
 // ----------------------------------------------------------------------------
 
-export default { newInstance, extend };
+export default {newInstance, extend};
